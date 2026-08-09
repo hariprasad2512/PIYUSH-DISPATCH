@@ -9,7 +9,8 @@ const mapping = [
   { file: '028-better-input-better-output-thats-context-engineering.mdx', newNum: 3 },
   { file: '029-the-prompt-is-just-one-ingredient-the-harness-is-the-kitchen.mdx', newNum: 4 },
   { file: '030-loop-engineering-what-makes-ai-agents-improve-themselves.mdx', newNum: 5 },
-  { file: '031-graph-engineering-beyond-single-ai-loops.mdx', newNum: 6 }
+  { file: '031-graph-engineering-beyond-single-ai-loops.mdx', newNum: 6 },
+  { file: '032-ai-agents-101.mdx', newNum: 7 }
 ];
 
 mapping.forEach(item => {

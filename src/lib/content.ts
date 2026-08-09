@@ -70,8 +70,16 @@ export async function getIssueSummaries(): Promise<IssueSummary[]> {
 
 export async function getIssueBySlug(slug: string): Promise<Issue | null> {
   const issues = await getAllIssues();
+  if (!slug) return null;
   if (slug === 'latest' && issues.length > 0) return issues[0];
-  return issues.find((issue) => issue.slug === slug) || null;
+
+  const cleanSlug = slug.toLowerCase().trim();
+  return issues.find((issue) => 
+    issue.slug.toLowerCase() === cleanSlug || 
+    issue.id.toLowerCase() === cleanSlug ||
+    `daily-nodes-${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase() === cleanSlug ||
+    `daily-nodes-${issue.issueNumber}`.toLowerCase() === cleanSlug
+  ) || null;
 }
 
 export async function getIssuesByTopic(topicSlug: string): Promise<Issue[]> {

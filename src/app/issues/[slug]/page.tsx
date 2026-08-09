@@ -19,7 +19,6 @@ import SubscribeForm from '@/components/SubscribeForm';
 import BackToTop from '@/components/BackToTop';
 import MDXContent from '@/components/MDXContent';
 import ZenReadingControls from '@/components/ZenReadingControls';
-import AudioPlayer from '@/components/AudioPlayer';
 import OptimizedImage from '@/components/OptimizedImage';
 import JsonLd from '@/components/JsonLd';
 import { absoluteUrl, siteConfig } from '@/lib/site';
@@ -217,12 +216,6 @@ export default async function IssuePage({ params }: Props) {
               <ArticleTOC headings={issue.headings} />
               <ShareActions title={issue.title} />
             </div>
-
-            {/* Audio Briefing Player (Interactive Text-to-Speech) */}
-            <div className="non-reading-ui">
-              <AudioPlayer title={issue.title} readingTime={issue.readingTime} />
-            </div>
-
 
 
             <div className="prose prose-lg max-w-none">

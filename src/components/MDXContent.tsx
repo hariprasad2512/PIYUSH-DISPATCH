@@ -16,13 +16,13 @@ renderer.heading = function({ tokens, depth }) {
   const id = slugify(rawText || text);
 
   if (depth === 2) {
-    return `<h2 id="${id}" class="scroll-mt-28 border-b border-[var(--border-color)] pb-3 font-serif text-2xl md:text-3xl font-bold mt-14 mb-6 text-[var(--text-primary)]">${text}</h2>`;
+    return `<h2 id="${id}" class="scroll-mt-28 border-b border-[var(--border-color)] pb-2 font-serif text-2xl md:text-3xl font-bold mt-10 mb-4 text-[var(--text-primary)]">${text}</h2>`;
   }
   if (depth === 3) {
-    return `<h3 id="${id}" class="scroll-mt-28 font-serif text-xl md:text-2xl font-bold mt-10 mb-4 text-[var(--text-primary)]">${text}</h3>`;
+    return `<h3 id="${id}" class="scroll-mt-28 font-serif text-xl md:text-2xl font-bold mt-8 mb-3 text-[var(--text-primary)]">${text}</h3>`;
   }
   if (depth === 1) {
-    return `<h1 id="${id}" class="font-serif text-3xl md:text-5xl font-bold mt-12 mb-6 text-[var(--text-primary)]">${text}</h1>`;
+    return `<h1 id="${id}" class="font-serif text-3xl md:text-5xl font-bold mt-8 mb-4 text-[var(--text-primary)]">${text}</h1>`;
   }
   return `<h${depth} id="${id}">${text}</h${depth}>`;
 };
@@ -43,7 +43,7 @@ renderer.image = function({ href, title, text }) {
   const caption = text || title || '';
 
   return `
-    <figure class="my-10 text-center">
+    <figure class="my-6 text-center">
       <img 
         src="${cleanSrc}" 
         alt="${caption}" 
@@ -52,12 +52,12 @@ renderer.image = function({ href, title, text }) {
         class="rounded-2xl border border-[var(--border-color)] shadow-lg w-full max-w-4xl mx-auto object-cover bg-[var(--surface)] transition-transform duration-300 hover:scale-[1.01]" 
         onerror="this.onerror=null; this.style.display='none';"
       />
-      ${caption ? `<figcaption class="mt-3 text-center text-xs font-mono text-[var(--text-secondary)] italic">${caption}</figcaption>` : ''}
+      ${caption ? `<figcaption class="mt-2 text-center text-xs font-mono text-[var(--text-secondary)] italic">${caption}</figcaption>` : ''}
     </figure>
   `;
 };
 
-marked.use({ renderer, gfm: true, breaks: true });
+marked.use({ renderer, gfm: true, breaks: false });
 
 export function MDXContent({ content }: MDXContentProps) {
   const source = content || '';

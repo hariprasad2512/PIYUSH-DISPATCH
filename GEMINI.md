@@ -2,10 +2,10 @@
 title: GEMINI.md — Piyush's Dispatch Governance & Operating Guide
 type: governance-rule
 status: active
-version: 2.0.0
-last_reviewed: 2026-08-09
+version: 2.1.0
+last_reviewed: 2026-08-10
 approved_by: publication-owner
-change_reason: "Synchronized authority, badge schema (DAILY-NODES#001), 15-theme system (8 AMOLED #000000 themes), autohide left TOC, and 27-page static build architecture."
+change_reason: "Synchronized authority, badge schema (DAILY-NODES#001 to DAILY-NODES#007), JPG asset standard (.jpg), 15-theme system, autohide left TOC, and 29-page static build architecture."
 deprecation_date: null
 ---
 
@@ -21,11 +21,12 @@ The publication is a **premium independent newsletter & permanent long-form tech
 
 1. **Reading-First Architecture**: Every feature, layout change, or typography rule must prioritize high-legibility long-form reading.
 2. **Zero Data Loss**: Never delete, overwrite, or corrupt authentic issue content (`content/issues/*.mdx`) or user assets without explicit backup and user consent.
-3. **Badge Naming Standard**: Issue numbers across all cards, headers, navigation, and badges MUST use the canonical format: `DAILY-NODES#001`, `DAILY-NODES#002`, `DAILY-NODES#003`, etc.
-4. **Link & Asset Integrity**: Every link (internal navigation, source references, TOC anchors) and image asset path (`/assets/...`) must resolve cleanly. Never introduce dummy `#` links.
-5. **Theme Discipline**: All UI components must use CSS custom properties (`var(--bg)`, `var(--text-primary)`, `var(--accent)`, `var(--border-color)`, `var(--surface)`) to guarantee compatibility across all 15 themes (7 Editorial + 8 AMOLED Pure Black `#000000` themes).
-6. **Autohiding Left TOC**: The Table of Contents sidebar lives on the **left side** of the article layout and must fully disappear (`opacity-0 pointer-events-none -translate-x-8`) on downward scroll, with smooth hover/scroll-up reveal.
-7. **Compilation Verification**: Never declare a task resolved without running `npx tsc --noEmit` and verifying `npm run build` static generation.
+3. **Badge Naming Standard**: Issue numbers across all cards, headers, navigation, and badges MUST use the canonical format: `DAILY-NODES#001`, `DAILY-NODES#002`, `DAILY-NODES#003`, ..., `DAILY-NODES#007`.
+4. **JPG Image Asset Standard**: All issue hero and inline illustration assets must strictly use **JPG (`.jpg`) format** stored in normalized directories (`public/assets/daily-node-N/` and `public/assets/issue-N/`).
+5. **Link & Asset Integrity**: Every link (internal navigation, source references, TOC anchors) and image asset path (`/assets/...`) must resolve cleanly. Never introduce dummy `#` links.
+6. **Theme Discipline**: All UI components must use CSS custom properties (`var(--bg)`, `var(--text-primary)`, `var(--accent)`, `var(--border-color)`, `var(--surface)`) to guarantee compatibility across all 15 themes (7 Editorial + 8 AMOLED Pure Black `#000000` themes).
+7. **Autohiding Left TOC**: The Table of Contents sidebar lives on the **left side** of the article layout and must fully disappear (`opacity-0 pointer-events-none -translate-x-8`) on downward scroll, with smooth hover/scroll-up reveal.
+8. **Compilation Verification**: Never declare a task resolved without running `npx tsc --noEmit` and verifying `npm run build` static generation.
 
 ---
 
@@ -33,9 +34,9 @@ The publication is a **premium independent newsletter & permanent long-form tech
 
 ```text
 C:\Users\offic\OneDrive\Desktop\newsletter\
-├── content\issues\       # Authentic MDX newsletter issue content (DAILY-NODES #1 to #6)
+├── content\issues\       # Authentic MDX newsletter issue content (DAILY-NODES #001 to #007)
 ├── public\
-│   └── assets\           # Image assets for issues (/assets/issue%23.../)
+│   └── assets\           # JPG image assets for issues (/assets/daily-node-7/*.jpg, /assets/issue-7/*.jpg)
 ├── src\
 │   ├── app\              # Next.js 15 App Router pages & layouts
 │   │   ├── globals.css   # 15-theme CSS variables & typography
@@ -48,7 +49,7 @@ C:\Users\offic\OneDrive\Desktop\newsletter\
 │   ├── components\       # Modular UI components (Header, Footer, ArticleTOC, MDXContent, etc.)
 │   ├── lib\              # Core content loader (10s in-memory cache), marked renderer, utilities
 │   └── types\            # TypeScript definitions (Issue, Topic, Source, Heading)
-├── scripts\              # Node maintenance, link audit, and renumbering utility scripts
+├── scripts\              # Node maintenance, link audit, asset deployment, and renumbering utility scripts
 ├── GEMINI.md             # Governance Operating Contract (this file)
 └── AGENT.md              # Agent Operating Instructions
 ```
@@ -61,24 +62,25 @@ Every newsletter issue inside `content/issues/` must adhere to Frontmatter Schem
 
 ```yaml
 ---
-issueNumber: 6
-date: "2026-08-09"
-title: "Graph Engineering — Beyond Single AI Loops"
-subtitle: "Why the best AI systems don't rely on a single agent running in circles."
-excerpt: "A deep dive into connected node/edge workflows."
-heroImage: "/assets/issue%236/9.jpg"
+issueNumber: 7
+date: "2026-08-10"
+title: "AI Agents 101 — From Answering Questions to Taking Action"
+subtitle: "Why the future of AI isn't just about better answers—it's about systems that can reason, choose tools, and execute workflows."
+excerpt: "An introduction to agentic AI: how AI agents reason, use tools, iterate in loops, and move from answering questions to pursuing goals."
+heroImage: "/assets/daily-node-7/1.jpg"
 topics:
   - AI
   - Agentic AI
-  - Graph Engineering
+  - AI Agents
 tags:
   - ai
   - agentic-ai
+  - ai-agents
 sources:
-  - title: "Graph AI Research"
-    publisher: "Google Research"
-    date: "2026-08-09"
-    url: "https://ai.google/research"
+  - title: "Piyush's Dispatch Original"
+    publisher: "Piyush's Dispatch"
+    date: "2026-08-10"
+    url: "https://dispatch.piyush.dev"
 relatedIssues: []
 published: true
 ---
@@ -112,5 +114,5 @@ All component styling must rely on Tailwind CSS v4 variables or `var(--...)` tok
 Before completing any task:
 1. Run `npx tsc --noEmit` ➔ 0 errors required.
 2. Run `node scripts/audit-links.js` ➔ 0 broken/dummy links required.
-3. Run `npm run build` ➔ 27 static pages prerendered successfully in ~2 seconds.
+3. Run `npm run build` ➔ 29 static pages prerendered successfully in ~2 seconds.
 4. Ensure dev server runs on `http://localhost:3000`.

@@ -82,3 +82,33 @@
  GET /about 200 in 124ms (next.js: 11ms, application-code: 113ms)
  GET /about 200 in 2.9s (next.js: 342ms, application-code: 2.6s)
  POST /api/subscribe 503 in 256ms (next.js: 152ms, application-code: 104ms)
+ GET /about 200 in 1326ms (next.js: 331ms, application-code: 995ms)
+  Reload env: .env.local
+ GET /about 200 in 1349ms (next.js: 704ms, application-code: 645ms)
+ GET / 200 in 2.7s (next.js: 1314ms, application-code: 1404ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /issues 200 in 499ms (next.js: 332ms, application-code: 168ms)
+ GET / 200 in 317ms (next.js: 15ms, application-code: 301ms)
+ GET / 200 in 1423ms (next.js: 573ms, application-code: 850ms)
+ GET / 200 in 609ms (next.js: 65ms, application-code: 544ms)
+ GET / 200 in 2.8s (next.js: 72ms, application-code: 2.7s)
+ GET /issues/032-ai-agents-101 200 in 1060ms (next.js: 423ms, generate-params: 72ms, application-code: 565ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET /issues/032-ai-agents-101 200 in 1186ms (next.js: 314ms, generate-params: 104ms, application-code: 768ms)
+✓ Compiled in 1403ms
+⨯ ReferenceError: AudioPlayer is not defined
+    at IssuePage (src\app\issues\[slug]\page.tsx:222:16)
+  220 |             {/* Audio Briefing Player (Interactive Text-to-Speech) */}
+  221 |             <div className="non-reading-ui">
+> 222 |               <AudioPlayer title={issue.title} readingTime={issue.readingTime} />
+      |                ^
+  223 |             </div>
+  224 |
+  225 | {
+  digest: '1641669048'
+}
+ GET /issues/032-ai-agents-101 200 in 800ms (next.js: 306ms, generate-params: 36ms, application-code: 458ms)
+ GET /issues/032-ai-agents-101 200 in 1289ms (next.js: 53ms, generate-params: 30ms, application-code: 1206ms)
+ GET /issues/032-ai-agents-101 200 in 403ms (next.js: 77ms, generate-params: 32ms, application-code: 294ms)
+ GET /issues/032-ai-agents-101 200 in 2.5s (next.js: 904ms, generate-params: 225ms, application-code: 1349ms)
+ GET /issues/032-ai-agents-101 200 in 2.4s (next.js: 296ms, generate-params: 224ms, application-code: 1866ms)
