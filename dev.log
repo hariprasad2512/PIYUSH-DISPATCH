@@ -80,3 +80,5 @@
   Reload env: .env.local
  GET /about 200 in 729ms (next.js: 363ms, application-code: 366ms)
  GET /about 200 in 124ms (next.js: 11ms, application-code: 113ms)
+ GET /about 200 in 2.9s (next.js: 342ms, application-code: 2.6s)
+ POST /api/subscribe 503 in 256ms (next.js: 152ms, application-code: 104ms)
