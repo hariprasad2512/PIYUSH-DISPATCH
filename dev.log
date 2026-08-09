@@ -1,0 +1,26 @@
+
+> newsletter@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by process 4800, using available port 3001 instead.
+▲ Next.js 16.3.0 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.29.64:3001
+✓ Ready in 1960ms
+✓ Running next.config.ts took 192ms
+- Experiments (use with caution):
+  · optimizePackageImports
+
+○ Compiling / ...
+ GET / 200 in 12.9s (next.js: 9.6s, application-code: 3.3s)
+ HEAD / 200 in 1685ms (next.js: 377ms, application-code: 1308ms)
+ GET / 200 in 3.2s (next.js: 255ms, application-code: 2.9s)
+○ Compiling /feed.xml ...
+ GET /feed.xml 200 in 6.5s (next.js: 5.9s, application-code: 567ms)
+ GET /issues 200 in 668ms (next.js: 528ms, application-code: 140ms)
+ GET /issues 200 in 627ms (next.js: 417ms, application-code: 210ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+ GET / 200 in 205ms (next.js: 32ms, application-code: 173ms)
+ GET /issues 200 in 204ms (next.js: 37ms, application-code: 167ms)
+ GET / 200 in 191ms (next.js: 27ms, application-code: 164ms)
+ GET / 200 in 571ms (next.js: 130ms, application-code: 441ms)

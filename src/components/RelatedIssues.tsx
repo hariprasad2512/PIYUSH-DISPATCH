@@ -1,0 +1,53 @@
+import React from 'react';
+import Link from 'next/link';
+import { Issue } from '@/types';
+
+interface RelatedIssuesProps {
+  issues: Issue[];
+}
+
+export function RelatedIssues({ issues }: RelatedIssuesProps) {
+  if (!issues || issues.length === 0) return null;
+
+  return (
+    <section className="mt-20 pt-16 border-t border-[var(--border-color)]">
+      <div className="w-full">
+        <h2 className="font-serif text-3xl font-bold text-[var(--text-primary)] mb-10 text-center">
+          Continue Reading
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {issues.slice(0, 3).map((issue) => (
+            <Link 
+              key={issue.id} 
+              href={`/issues/${issue.slug}`}
+              className="group flex flex-col bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 hover:shadow-lg hover:border-[var(--accent)] transition-all duration-300"
+            >
+              <div className="text-xs font-mono text-[var(--accent)] font-semibold mb-3">
+                DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}
+              </div>
+              
+              <h3 className="font-serif text-xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors line-clamp-2">
+                {issue.title}
+              </h3>
+              
+              <p className="text-sm text-[var(--text-secondary)] mb-6 line-clamp-3 flex-grow leading-relaxed">
+                {issue.excerpt}
+              </p>
+              
+              <div className="flex flex-wrap gap-1.5 mt-auto">
+                {issue.topics.slice(0, 2).map((topic) => (
+                  <span key={topic} className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 bg-[var(--bg)] border border-[var(--border-color)] rounded-full text-[var(--text-secondary)]">
+                    {topic}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default RelatedIssues;

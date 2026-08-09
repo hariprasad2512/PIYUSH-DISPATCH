@@ -1,0 +1,561 @@
+@import "tailwindcss";
+
+/* Custom variant selectors for 15 themes */
+@custom-variant light (&:where([data-theme=light], [data-theme=light] *));
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant midnight (&:where([data-theme=midnight], [data-theme=midnight] *));
+@custom-variant forest (&:where([data-theme=forest], [data-theme=forest] *));
+@custom-variant nordic (&:where([data-theme=nordic], [data-theme=nordic] *));
+@custom-variant espresso (&:where([data-theme=espresso], [data-theme=espresso] *));
+@custom-variant crimson (&:where([data-theme=crimson], [data-theme=crimson] *));
+
+/* 8 AMOLED Pure Black (#000000) Variants */
+@custom-variant amoled-obsidian (&:where([data-theme=amoled-obsidian], [data-theme=amoled-obsidian] *));
+@custom-variant amoled-paper (&:where([data-theme=amoled-paper], [data-theme=amoled-paper] *));
+@custom-variant amoled-matcha (&:where([data-theme=amoled-matcha], [data-theme=amoled-matcha] *));
+@custom-variant amoled-cyber (&:where([data-theme=amoled-cyber], [data-theme=amoled-cyber] *));
+@custom-variant amoled-espresso (&:where([data-theme=amoled-espresso], [data-theme=amoled-espresso] *));
+@custom-variant amoled-crimson (&:where([data-theme=amoled-crimson], [data-theme=amoled-crimson] *));
+@custom-variant amoled-forest (&:where([data-theme=amoled-forest], [data-theme=amoled-forest] *));
+@custom-variant amoled-nordic (&:where([data-theme=amoled-nordic], [data-theme=amoled-nordic] *));
+
+@theme inline {
+  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', monospace;
+
+  --color-bg: var(--bg);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border-color);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   1. EDITORIAL COLOR THEMES
+   ───────────────────────────────────────────────────────────── */
+
+/* 1. Light (Clean Editorial Off-White) */
+:root, :root[data-theme='light'] {
+  --bg: #FAFAF7;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --border-color: #E8E6E1;
+  --accent: #B45309;
+  --surface: #F0EDE6;
+}
+
+/* 2. Dark (Sleek Charcoal) */
+:root[data-theme='dark'] {
+  --bg: #141414;
+  --text-primary: #E8E6E1;
+  --text-secondary: #8A8A8A;
+  --border-color: #2A2A2A;
+  --accent: #D97706;
+  --surface: #1E1E1E;
+}
+
+/* 3. Midnight (Deep Space Obsidian) */
+:root[data-theme='midnight'] {
+  --bg: #060708;
+  --text-primary: #F0F4F8;
+  --text-secondary: #718096;
+  --border-color: #1A202C;
+  --accent: #3182CE;
+  --surface: #10141B;
+}
+
+/* 4. Forest (Deep Emerald Evergreen) */
+:root[data-theme='forest'] {
+  --bg: #0C1410;
+  --text-primary: #D6E8DC;
+  --text-secondary: #789984;
+  --border-color: #1B2B22;
+  --accent: #E5A93C;
+  --surface: #14211B;
+}
+
+/* 5. Nordic (Deep Ocean Midnight Navy) */
+:root[data-theme='nordic'] {
+  --bg: #0B1320;
+  --text-primary: #E2F1F8;
+  --text-secondary: #6B889E;
+  --border-color: #17263C;
+  --accent: #38BDF8;
+  --surface: #111D30;
+}
+
+/* 6. Espresso (Rich Dark Roasted Coffee & Caramel) */
+:root[data-theme='espresso'] {
+  --bg: #171210;
+  --text-primary: #ECE0D5;
+  --text-secondary: #9E8B7D;
+  --border-color: #2D231E;
+  --accent: #E58E26;
+  --surface: #211A17;
+}
+
+/* 7. Crimson (Deep Slate Velvet & Rose) */
+:root[data-theme='crimson'] {
+  --bg: #151012;
+  --text-primary: #F3E8EE;
+  --text-secondary: #9D8390;
+  --border-color: #2B1E24;
+  --accent: #E11D48;
+  --surface: #1E171B;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. 8 AMOLED PURE BLACK (#000000) THEMES
+   ───────────────────────────────────────────────────────────── */
+
+/* 8. AMOLED Paper (Pure Black #000000 + Warm Amber Parchment) */
+:root[data-theme='amoled-paper'] {
+  --bg: #000000;
+  --text-primary: #F3E5D8;
+  --text-secondary: #9E8C7C;
+  --border-color: #241D17;
+  --accent: #F59E0B;
+  --surface: #0E0C0A;
+}
+
+/* 9. AMOLED Obsidian (Pure Black #000000 + Sky Blue Accent) */
+:root[data-theme='amoled-obsidian'] {
+  --bg: #000000;
+  --text-primary: #FFFFFF;
+  --text-secondary: #888888;
+  --border-color: #1F1F1F;
+  --accent: #38BDF8;
+  --surface: #0A0A0A;
+}
+
+/* 10. AMOLED Matcha (Pure Black #000000 + Mint Emerald) */
+:root[data-theme='amoled-matcha'] {
+  --bg: #000000;
+  --text-primary: #D1EAE0;
+  --text-secondary: #6B9E88;
+  --border-color: #17281E;
+  --accent: #10B981;
+  --surface: #08120D;
+}
+
+/* 11. AMOLED Cyber (Pure Black #000000 + Neon Pink Rose) */
+:root[data-theme='amoled-cyber'] {
+  --bg: #000000;
+  --text-primary: #FCE7F3;
+  --text-secondary: #9D8BAB;
+  --border-color: #29152E;
+  --accent: #F43F5E;
+  --surface: #120614;
+}
+
+/* 12. AMOLED Espresso (Pure Black #000000 + Latte Cream & Caramel) */
+:root[data-theme='amoled-espresso'] {
+  --bg: #000000;
+  --text-primary: #ECE0D5;
+  --text-secondary: #9E8B7D;
+  --border-color: #261C17;
+  --accent: #E58E26;
+  --surface: #0D0B0A;
+}
+
+/* 13. AMOLED Crimson (Pure Black #000000 + Rose Silver & Red) */
+:root[data-theme='amoled-crimson'] {
+  --bg: #000000;
+  --text-primary: #F3E8EE;
+  --text-secondary: #9D8390;
+  --border-color: #2A1620;
+  --accent: #E11D48;
+  --surface: #100A0D;
+}
+
+/* 14. AMOLED Forest (Pure Black #000000 + Sage & Gold Amber) */
+:root[data-theme='amoled-forest'] {
+  --bg: #000000;
+  --text-primary: #D6E8DC;
+  --text-secondary: #789984;
+  --border-color: #16261E;
+  --accent: #E5A93C;
+  --surface: #0A110D;
+}
+
+/* 15. AMOLED Nordic (Pure Black #000000 + Ice Blue & Polar Accent) */
+:root[data-theme='amoled-nordic'] {
+  --bg: #000000;
+  --text-primary: #E2F1F8;
+  --text-secondary: #6B889E;
+  --border-color: #142436;
+  --accent: #0EA5E9;
+  --surface: #08101A;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. BASE STYLES & RENDERING OPTIMIZATIONS
+   ───────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  contain: content;
+}
+
+.container-full {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-full {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-full {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+.issue-grid-container {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--accent);
+  color: #FAFAF7;
+}
+
+/* Focus States */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Reading Progress Bar */
+.reading-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: transparent;
+  z-index: 100;
+  will-change: width;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  background-color: var(--accent);
+  width: 0%;
+  transition: width 0.08s ease-out;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. FULLSCREEN ZEN READING MODE (100% FULL SCREEN & HERO PHOTO)
+   ───────────────────────────────────────────────────────────── */
+body.zen-mode header,
+body.zen-mode footer,
+body.zen-mode aside,
+body.zen-mode .non-reading-ui {
+  display: none !important;
+}
+
+body.zen-mode {
+  padding-top: 1rem !important;
+  padding-bottom: 4rem !important;
+  overflow-x: hidden !important;
+}
+
+body.zen-mode article {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+@media (min-width: 768px) {
+  body.zen-mode article {
+    padding-left: 4rem !important;
+    padding-right: 4rem !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  body.zen-mode article {
+    padding-left: 6rem !important;
+    padding-right: 6rem !important;
+  }
+}
+
+body.zen-mode .max-w-\[760px\],
+body.zen-mode .max-w-\[680px\],
+body.zen-mode .max-w-5xl,
+body.zen-mode .max-w-3xl,
+body.zen-mode .max-w-\[1440px\] {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Full Screen Hero Upper Photo Overrides */
+body.zen-mode .hero-image-wrapper,
+body.zen-mode .hero-image-wrapper > div {
+  max-width: 100% !important;
+  width: 100% !important;
+  border-radius: 1.5rem !important;
+}
+
+body.zen-mode .hero-image-wrapper img {
+  max-height: 75vh !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+body.zen-mode .prose {
+  font-size: 1.3rem !important;
+  line-height: 1.95 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+body.zen-mode .prose img,
+body.zen-mode .prose figure {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.zen-exit-floating-btn {
+  display: none;
+}
+
+body.zen-mode .zen-exit-floating-btn {
+  display: flex !important;
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. PROSE TYPOGRAPHY STYLES
+   ───────────────────────────────────────────────────────────── */
+.prose {
+  color: var(--text-primary);
+  max-width: 74ch;
+  margin: 0 auto;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  content-visibility: auto;
+}
+
+.prose > * + * {
+  margin-top: 1.5em;
+}
+
+.prose h1 {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 2.5em;
+  margin-bottom: 0.8em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.prose h2 {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 2.5em;
+  margin-bottom: 0.8em;
+  line-height: 1.3;
+  color: var(--text-primary);
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.prose h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.prose p {
+  margin-bottom: 1.5em;
+  line-height: 1.85;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: none;
+  position: relative;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.prose a::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -1px;
+  left: 0;
+  background-color: var(--accent);
+  transform-origin: bottom right;
+  transition: transform 0.2s ease-out;
+}
+
+.prose a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--accent);
+  padding: 1.25em 1.75em;
+  margin: 2em 0;
+  background-color: var(--surface);
+  border-radius: 0 0.75rem 0.75rem 0;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.prose blockquote p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  background-color: var(--surface);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: var(--accent);
+}
+
+.prose pre {
+  background-color: #1A1B26;
+  color: #C0CAF5;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin: 2em 0;
+  border: 1px solid var(--border-color);
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 1.5em 0;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 1.5em 0;
+}
+
+.prose li {
+  margin-bottom: 0.5em;
+  line-height: 1.75;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 2.5em auto;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.prose figure {
+  margin: 2.5em 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+.prose figcaption {
+  text-align: center;
+  font-size: 0.875em;
+  color: var(--text-secondary);
+  margin-top: 0.75em;
+  font-style: italic;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 3.5em 0;
+}
+
+/* Fast Transitions */
+* {
+  transition-property: background-color, border-color;
+  transition-duration: 0.15s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a, button {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-duration: 0.15s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
