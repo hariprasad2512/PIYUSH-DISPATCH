@@ -22,8 +22,11 @@ export function PrevNextNav({ previousIssue, nextIssue }: PrevNextNavProps) {
             <div className="text-xs font-mono text-[var(--text-secondary)] uppercase tracking-wider mb-2 flex items-center gap-2">
               <span aria-hidden="true">&larr;</span> Previous Dispatch
             </div>
-            <div className="font-mono text-xs text-[var(--accent)] mb-1 font-semibold">
-              DAILY-NODES#{String(previousIssue.issueNumber).padStart(3, '0')}
+            <div className="font-mono text-xs text-[var(--accent)] mb-1 font-semibold flex items-center gap-2">
+              <span>DAILY-NODES#{String(previousIssue.issueNumber).padStart(3, '0')}</span>
+              {previousIssue.readingTime > 0 && (
+                <span className="text-[var(--text-secondary)] font-normal">• {previousIssue.readingTime} min read</span>
+              )}
             </div>
             <h4 className="font-serif font-bold text-lg text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors line-clamp-2">
               {previousIssue.title}
@@ -42,8 +45,11 @@ export function PrevNextNav({ previousIssue, nextIssue }: PrevNextNavProps) {
             <div className="text-xs font-mono text-[var(--text-secondary)] uppercase tracking-wider mb-2 flex items-center justify-end gap-2">
               Next Dispatch <span aria-hidden="true">&rarr;</span>
             </div>
-            <div className="font-mono text-xs text-[var(--accent)] mb-1 font-semibold">
-              DAILY-NODES#{String(nextIssue.issueNumber).padStart(3, '0')}
+            <div className="font-mono text-xs text-[var(--accent)] mb-1 font-semibold flex items-center justify-end gap-2">
+              {nextIssue.readingTime > 0 && (
+                <span className="text-[var(--text-secondary)] font-normal">{nextIssue.readingTime} min read •</span>
+              )}
+              <span>DAILY-NODES#{String(nextIssue.issueNumber).padStart(3, '0')}</span>
             </div>
             <h4 className="font-serif font-bold text-lg text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors line-clamp-2">
               {nextIssue.title}

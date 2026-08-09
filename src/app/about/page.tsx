@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import SubscribeForm from '@/components/SubscribeForm';
 
 export const metadata: Metadata = {
-  title: 'About the Author',
-  description: "Learn more about Piyush and the editorial philosophy behind PIYUSH'S DISPATCH.",
+  title: "About — PIYUSH'S DISPATCH",
+  description: "A daily technical briefing on AI, software systems, and the ideas reshaping technology.",
   alternates: {
     canonical: '/about',
   },
@@ -12,19 +12,22 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 py-12 md:py-20 min-h-screen">
-      <header className="mb-16 border-b border-[var(--border-color)] pb-10 text-center max-w-4xl mx-auto">
+      <header className="mb-16 border-b border-[var(--border-color)] pb-12 text-center max-w-4xl mx-auto">
         <div className="inline-block mb-4 px-3.5 py-1 border border-[var(--border-color)] bg-[var(--surface)] rounded-full text-xs font-mono text-[var(--accent)] uppercase font-semibold">
           Editorial Manifesto
         </div>
         <h1 className="font-serif text-4xl md:text-6xl font-bold text-[var(--text-primary)] tracking-tight mb-6">
-          About PIYUSH&apos;S DISPATCH
+          PIYUSH&apos;S DISPATCH
         </h1>
-        <p className="text-xl text-[var(--text-secondary)] leading-relaxed font-light">
-          A daily technical briefing exploring AI, software architecture, machine learning, and the ideas shaping the future of technology.
+        <p className="text-xl md:text-2xl text-[var(--text-primary)] leading-relaxed font-semibold mb-4">
+          A daily technical briefing on AI, software systems, and the ideas reshaping technology.
+        </p>
+        <p className="text-base md:text-lg text-[var(--text-secondary)] leading-relaxed font-light max-w-2xl mx-auto">
+          Written from first principles. Built for people who want to understand <strong>what is changing, why it matters, and what comes next.</strong>
         </p>
 
         {/* Social Links */}
-        <div className="flex justify-center gap-4 mt-8">
+        <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 mt-8">
           <a 
             href="https://x.com/PiyushPal143104" 
             target="_blank" 
@@ -66,54 +69,166 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <div className="max-w-[760px] mx-auto space-y-12 text-lg leading-relaxed text-[var(--text-primary)]">
-        <section className="space-y-4">
-          <h2 className="font-serif text-3xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-2">
-            The Vision
+      <div className="max-w-[760px] mx-auto space-y-16 text-lg leading-relaxed text-[var(--text-primary)]">
+        {/* THE DISPATCH */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-3">
+            THE DISPATCH
           </h2>
           <p>
-            In an era dominated by clickbait timelines, superficial buzzwords, and fragmented short-form content, <strong>Piyush&apos;s Dispatch</strong> exists to provide a permanent home for serious, long-form technical analysis.
+            Technology moves faster than most people can meaningfully understand it.
           </p>
           <p>
-            Every daily newsletter issue is written from first principles — breaking down complex shifts in artificial intelligence, software infrastructure, and startup economics into clear, actionable mental models.
+            New models appear every week. New frameworks become trends overnight. New buzzwords promise to redefine software, intelligence, and business.
           </p>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-serif text-3xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-2">
-            What We Cover
-          </h2>
-          <ul className="list-disc pl-6 space-y-3">
-            <li><strong>Artificial Intelligence &amp; LLMs:</strong> Agentic frameworks, context engineering, RAG, loop engineering, and graph systems.</li>
-            <li><strong>Software Engineering &amp; Systems:</strong> Modern devtools, cloud infrastructure, MLOps, and scalable architecture.</li>
-            <li><strong>Startups &amp; Business Strategy:</strong> Unit economics, founder playbooks, product-market fit, and market dynamics.</li>
-            <li><strong>First-Principles Observations:</strong> Critical analysis of hype cycles, research papers, and emerging technology trends.</li>
+          <p className="text-xl font-semibold text-[var(--text-primary)] bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border-color)]">
+            Piyush&apos;s Dispatch is a place to slow down.
+          </p>
+          <p>
+            Each issue takes one important idea and goes beneath the surface — tracing it back to first principles, connecting it to the larger technical landscape, and turning complexity into useful mental models.
+          </p>
+          <ul className="space-y-2 font-mono text-sm text-[var(--text-secondary)] pl-4 border-l-2 border-[var(--border-color)]">
+            <li>• No hype for the sake of hype.</li>
+            <li>• No recycled headlines.</li>
+            <li>• No shallow summaries.</li>
           </ul>
+          <p className="text-xl font-bold text-[var(--accent)]">
+            Just clear thinking about technology.
+          </p>
         </section>
 
-        <section className="space-y-4">
-          <h2 className="font-serif text-3xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-2">
-            Editorial Philosophy
+        {/* WHAT WE COVER */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-3">
+            WHAT WE COVER
           </h2>
-          <blockquote className="my-6 pl-6 border-l-4 border-[var(--accent)] italic font-serif text-xl text-[var(--text-primary)] bg-[var(--surface)] p-6 rounded-r-2xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] space-y-2">
+              <h3 className="font-serif font-bold text-xl text-[var(--accent)]">Artificial Intelligence &amp; LLMs</h3>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                Agents, context engineering, RAG, memory, tool use, loop engineering, graph systems, model architectures, and the infrastructure emerging around intelligent software.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] space-y-2">
+              <h3 className="font-serif font-bold text-xl text-[var(--accent)]">Software Engineering &amp; Systems</h3>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                Developer tools, cloud infrastructure, distributed systems, MLOps, system architecture, and the engineering principles behind scalable software.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] space-y-2">
+              <h3 className="font-serif font-bold text-xl text-[var(--accent)]">Startups &amp; Business</h3>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                Unit economics, product strategy, founder decisions, product-market fit, competitive dynamics, and the economics shaping technology companies.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] space-y-2">
+              <h3 className="font-serif font-bold text-xl text-[var(--accent)]">First-Principles Thinking</h3>
+              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+                Research papers, emerging technologies, industry shifts, hype cycles, and the underlying mechanisms that explain why things work.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* THE EDITORIAL PHILOSOPHY */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-3">
+            THE EDITORIAL PHILOSOPHY
+          </h2>
+          <blockquote className="my-6 pl-6 border-l-4 border-[var(--accent)] italic font-serif text-xl md:text-2xl text-[var(--text-primary)] bg-[var(--surface)] p-6 rounded-r-2xl shadow-xs">
             &quot;Every new AI buzzword is a new floor — not a demolition crew. Fundamentals compound over time.&quot;
           </blockquote>
           <p>
-            This website is designed <strong>Reading First</strong>. Every article is formatted with optimal typography, distraction-free reading controls, multiple paper/dark themes, zero pop-up ads, and immediate retrievability.
+            The goal isn&apos;t to predict every trend.
           </p>
+          <p>
+            It&apos;s to develop the <strong>mental models that remain useful after the trend disappears.</strong>
+          </p>
+          <div className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--bg)] font-mono text-sm space-y-2">
+            <p className="text-[var(--text-secondary)]">Because frameworks change.</p>
+            <p className="text-[var(--text-secondary)]">Models change.</p>
+            <p className="text-[var(--text-secondary)]">Markets change.</p>
+            <p className="text-[var(--accent)] font-bold text-base pt-2 border-t border-[var(--border-color)]">Fundamentals compound.</p>
+          </div>
         </section>
 
-        <div className="pt-12 border-t border-[var(--border-color)]">
-          <div className="text-center">
-            <h3 className="font-serif text-2xl font-bold mb-4 text-[var(--text-primary)]">
-              Subscribe to the Daily Briefing
-            </h3>
-            <p className="text-[var(--text-secondary)] mb-8 text-base max-w-md mx-auto">
-              Get the briefing in your inbox, with sources and practical context preserved.
+        {/* READING, NOT SCROLLING */}
+        <section className="space-y-6">
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[var(--text-primary)] border-b border-[var(--border-color)] pb-3">
+            READING, NOT SCROLLING
+          </h2>
+          <p>
+            The web is optimized for consumption.
+          </p>
+          <p className="text-xl font-bold text-[var(--text-primary)]">
+            Piyush&apos;s Dispatch is optimized for understanding.
+          </p>
+          <p>
+            Every article is designed around the reading experience:
+          </p>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-[var(--text-primary)] font-medium">
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>Long-form, distraction-free writing</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>Carefully structured technical explanations</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>Strong typography &amp; generous whitespace</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>Dark, light &amp; paper-inspired reading themes</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>Sources preserved alongside analysis</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>No intrusive pop-ups</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>No advertising clutter</span>
+            </li>
+            <li className="flex items-center gap-2 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--accent)] flex-shrink-0" />
+              <span>Evergreen value long after publication</span>
+            </li>
+          </ul>
+          <div className="pt-4 border-t border-[var(--border-color)] text-center">
+            <p className="text-sm font-mono text-[var(--text-secondary)] mb-1">This isn&apos;t a feed.</p>
+            <p className="font-serif text-xl font-bold text-[var(--accent)]">
+              It&apos;s a technical library that grows one issue at a time.
+            </p>
+          </div>
+        </section>
+
+        {/* SUBSCRIBE TO THE DAILY BRIEFING */}
+        <section className="pt-12 border-t border-[var(--border-color)]">
+          <div className="p-8 md:p-12 rounded-3xl border border-[var(--border-color)] bg-[var(--surface)] text-center shadow-md">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-3">
+              SUBSCRIBE TO THE DAILY BRIEFING
+            </h2>
+            <p className="font-mono text-xs text-[var(--accent)] font-bold tracking-widest uppercase mb-4">
+              One idea. One deep dive. Every day.
+            </p>
+            <p className="text-[var(--text-secondary)] mb-6 text-base max-w-md mx-auto leading-relaxed">
+              Get <em>Piyush&apos;s Dispatch</em> delivered to your inbox — with original sources, technical context, and practical mental models preserved in every issue.
+            </p>
+            <p className="font-serif text-lg font-bold text-[var(--text-primary)] mb-8 italic">
+              Read less noise. Understand more.
             </p>
             <SubscribeForm variant="inline" />
           </div>
-        </div>
+        </section>
       </div>
     </main>
   );

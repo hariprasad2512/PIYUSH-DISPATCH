@@ -3,7 +3,7 @@ export const siteConfig = {
   shortName: "Piyush's Dispatch",
   url: 'https://dispatch.piyush.dev',
   description:
-    'A daily publication exploring AI, software architecture, machine learning, startups, business, and the ideas shaping the future.',
+    'Understanding the technology behind the headlines, the architecture behind the products, and the ideas behind the companies shaping the future.',
   author: {
     name: 'Piyush',
     handle: 'PiyushPal143104',
@@ -13,8 +13,8 @@ export const siteConfig = {
       'https://www.linkedin.com/in/xrcodex/',
     ],
   },
-  contactEmail: 'hello@dispatch.piyush.dev',
-  defaultImage: '/assets/issue%236/9.jpg',
+  contactEmail: 'xrpiyushh@gmail.com',
+  defaultImage: '/assets/issue-6/9.jpg',
 };
 
 export function absoluteUrl(pathname: string = '/') {

@@ -37,8 +37,8 @@ renderer.image = function({ href, title, text }) {
     cleanSrc = '/' + cleanSrc;
   }
 
-  // Handle URL encoding for # symbol in folder names like issue#1
-  cleanSrc = cleanSrc.replace('/issue#', '/issue%23');
+  // Handle URL paths for issue asset folders (issue#1 -> issue-1)
+  cleanSrc = cleanSrc.replace(/\/issue(%23|#)/gi, '/issue-');
 
   const caption = text || title || '';
 

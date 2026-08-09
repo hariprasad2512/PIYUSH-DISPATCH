@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from './ThemeToggle';
-import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import { cn } from '@/lib/utils';
 
 export function Header() {
@@ -45,14 +44,6 @@ export function Header() {
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
               </Link>
-              <a href="/feed.xml" aria-label="RSS feed" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors p-2 rounded-full hover:bg-[var(--surface)]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 11a9 9 0 0 1 9 9"></path>
-                  <path d="M4 4a16 16 0 0 1 16 16"></path>
-                  <circle cx="5" cy="19" r="1"></circle>
-                </svg>
-              </a>
-              <KeyboardShortcutsModal />
               <ThemeToggle />
               <Link href="/subscribe" className="bg-[var(--accent)] hover:opacity-90 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-xs hover:shadow-md">
                 Subscribe
@@ -95,7 +86,6 @@ export function Header() {
             <Link href="/topics" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">Topics</Link>
             <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">About</Link>
             <Link href="/search" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">Search</Link>
-            <a href="/feed.xml" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">RSS Feed</a>
             <div className="pt-4 mt-2 border-t border-[var(--border-color)]">
               <Link href="/subscribe" onClick={() => setMobileMenuOpen(false)} className="block w-full text-center bg-[var(--accent)] text-white px-5 py-3 rounded-full text-base font-semibold shadow-md">
                 Subscribe

@@ -22,22 +22,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-y border-[var(--border-color)] py-8">
-          <div>
-            <p className="font-mono text-xs tracking-widest uppercase text-[var(--accent)] font-bold mb-2">Editorial promise</p>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">First-principles technical analysis with sources and clear takeaways.</p>
-          </div>
-          <div>
-            <p className="font-mono text-xs tracking-widest uppercase text-[var(--accent)] font-bold mb-2">Reader control</p>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">RSS, search, topics, reading controls, and a permanent public archive.</p>
-          </div>
-          <div>
-            <p className="font-mono text-xs tracking-widest uppercase text-[var(--accent)] font-bold mb-2">No dark patterns</p>
-            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">No popups, no fake scarcity, and subscription data handled by a configured provider.</p>
-          </div>
-        </div>
-      </section>
+
 
       {/* Recent Issues */}
       {recentIssues.length > 0 && (

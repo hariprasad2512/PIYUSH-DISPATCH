@@ -16,10 +16,8 @@ export function NewsletterHero() {
           PIYUSH&apos;S DISPATCH
         </h1>
         
-        <p className="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-3xl mx-auto leading-relaxed font-normal">
-          <span className="font-semibold text-[var(--text-primary)]">Ideas, developments, and analysis worth knowing.</span>
-          <br className="hidden sm:inline" />
-          Exploring AI, software architecture, machine learning, and startup strategy from first principles.
+        <p className="text-xl md:text-2xl text-[var(--text-secondary)] mb-12 max-w-4xl mx-auto leading-relaxed font-normal">
+          Understanding the technology behind the headlines, the architecture behind the products, and the ideas behind the companies shaping the future.
         </p>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">

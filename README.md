@@ -1,36 +1,206 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📰 Piyush's Dispatch (`DAILY-NODES`)
 
-## Getting Started
+> **A Reading-First Independent Technical Newsletter & Permanent Long-Form Technical Archive**
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15.3%2B-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-19.0-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38BDF8?style=flat-square&logo=tailwindcss)
+![Themes](https://img.shields.io/badge/Themes-15_Variants-purple?style=flat-square)
+![Static Build](https://img.shields.io/badge/Static_Prerender-27_Pages-emerald?style=flat-square)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🌟 Overview
+
+**Piyush's Dispatch** is a high-performance, reading-focused technical newsletter and permanent archive platform. Built around deep-dive topics in **AI Systems**, **Agentic AI**, **Context Engineering**, **Graph Engineering**, and **Retrieval-Augmented Generation (RAG)**, it combines editorial typography with modern web performance standards.
+
+The application leverages **Next.js 15 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS v4**, an in-memory cached **MDX compiler engine**, and a dynamic **15-theme engine** (featuring 8 AMOLED `#000000` Pure Black dark modes).
+
+---
+
+## ✨ Core Features
+
+### 📖 Reading-First Experience
+- **Autohiding Left TOC**: Table of Contents sidebar situated on the left side of articles that collapses (`opacity-0 pointer-events-none -translate-x-8`) on downward scroll and reveals smoothly on hover or upward scroll.
+- **Zero-Distraction Layout**: Optimized line lengths, fluid typography, readable font hierarchies, and responsive containers designed specifically for long-form reading.
+
+### 🎨 15 Theme Engine
+- **7 Editorial Themes**: Designed for diverse reading environments (`light`, `dark`, `midnight`, `forest`, `nordic`, `espresso`, `crimson`).
+- **8 AMOLED Pure Black (`#000000`) Themes**: Optimized for OLED displays (`amoled-paper`, `amoled-obsidian`, `amoled-matcha`, `amoled-cyber`, `amoled-espresso`, `amoled-crimson`, `amoled-forest`, `amoled-nordic`).
+- **CSS Custom Property Design System**: Standardized CSS variables (`var(--bg)`, `var(--text-primary)`, `var(--accent)`, `var(--border-color)`, `var(--surface)`) ensuring seamless instantaneous switching without flash of unstyled content (FOUC).
+
+### 🏷️ Badge Naming Standardization
+- Standardized issue format across all cards, navigation headers, article readers, and metadata: `DAILY-NODES#001`, `DAILY-NODES#002`, `DAILY-NODES#003`, etc.
+
+### ⚡ Fast MDX Content Compiler
+- MDX parsing via `marked` and `gray-matter` with an efficient 10-second in-memory cache strategy.
+- Pre-rendered static generation (`next build`) delivering instant page transitions and sub-millisecond reader loading.
+
+### 🔍 Interactive Search & Navigation
+- Real-time client-side search powered by React 19 `useDeferredValue` filtering titles, subtitles, excerpts, content, topics, and tags without UI blocking.
+- Topic and tag classification index pages with curated metadata.
+
+### 🛡️ Link & Source Integrity
+- Automated audit tools ensuring 100% link resolution across internal anchors, topic links, and source citations.
+- Complete source provenance for every published issue with publisher metadata and verified URLs.
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+| Category | Technology / Library |
+| :--- | :--- |
+| **Framework** | [Next.js 15.3](https://nextjs.org/) (App Router) |
+| **UI Library** | [React 19](https://react.dev/) |
+| **Language** | [TypeScript 5](https://www.typescriptlang.org/) |
+| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) + PostCSS |
+| **Content Processing** | `marked`, `gray-matter` |
+| **Class Utilities** | `clsx`, `tailwind-merge` |
+| **Tooling** | ESLint 9, Node.js, `ts-node` |
+
+---
+
+## 📁 Project Architecture
+
+```text
+newsletter/
+├── content/
+│   └── issues/            # Authentic MDX newsletter issues (DAILY-NODES #001+)
+├── public/
+│   └── assets/            # Issue hero images & illustrations (/assets/issue#.../)
+├── src/
+│   ├── app/               # Next.js App Router routes & layouts
+│   │   ├── globals.css    # 15-Theme CSS variables & base typography
+│   │   ├── page.tsx       # Homepage (Hero, Today's Issue, Archive, Newsletter Form)
+│   │   ├── issues/        # Issue Reader ([slug]/page.tsx) & Archive index
+│   │   ├── topics/        # Topic classification directory
+│   │   ├── search/        # Instant search page (useDeferredValue)
+│   │   ├── subscribe/     # Newsletter subscription workflow
+│   │   └── about/         # Author & publication background
+│   ├── components/        # UI Components (Header, Footer, ArticleTOC, MDXContent, etc.)
+│   ├── lib/               # Content compiler, 10s caching loader, marked renderer
+│   └── types/             # TypeScript interfaces (Issue, Topic, Source, Heading)
+├── scripts/               # Maintenance, link auditing, and vault import scripts
+│   ├── audit-links.js     # Validates internal links & source URL resolution
+│   ├── renumber-issues.js # Enforces DAILY-NODES badge naming standard
+│   ├── import-content.ts  # CLI importer for new Markdown/MDX notes
+│   ├── fix-sources-links.js # Source citation link repair utility
+│   └── delete-sample-issues.js # Workspace cleanup helper
+├── GEMINI.md              # Governance & Operating Contract
+└── AGENTS.md              # Agent Operating Directives
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 MDX Frontmatter Contract
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Every newsletter issue in `content/issues/` adheres to Frontmatter Schema v1:
 
-## Learn More
+```yaml
+---
+issueNumber: 6
+date: "2026-08-09"
+title: "Graph Engineering — Beyond Single AI Loops"
+subtitle: "Why the best AI systems don't rely on a single agent running in circles."
+excerpt: "A deep dive into connected node/edge workflows."
+heroImage: "/assets/issue%236/9.jpg"
+topics:
+  - AI
+  - Agentic AI
+  - Graph Engineering
+tags:
+  - ai
+  - agentic-ai
+sources:
+  - title: "Graph AI Research"
+    publisher: "Google Research"
+    date: "2026-08-09"
+    url: "https://ai.google/research"
+relatedIssues: []
+published: true
+---
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Theme Matrix
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Theme Identifier | Visual Profile | Accent Color | Mode Type |
+| :--- | :--- | :--- | :--- |
+| `light` | Crisp White Background | Clean Navy / Blue | Light |
+| `dark` | Deep Slate Grey | Cyan Accent | Dark |
+| `midnight` | Deep Navy Night | Sky Blue | Dark |
+| `forest` | Deep Sage Green | Emerald Accent | Dark |
+| `nordic` | Polar Ice Tint | Ice Blue | Dark |
+| `espresso` | Warm Roasted Coffee | Caramel / Bronze | Dark |
+| `crimson` | Dark Burgundy Wine | Rose / Crimson | Dark |
+| `amoled-paper` | Warm Amber Parchment Text | Amber Gold | **AMOLED Pure Black (`#000000`)** |
+| `amoled-obsidian` | Crisp White Text | Sky Blue | **AMOLED Pure Black (`#000000`)** |
+| `amoled-matcha` | Mint Sage Text | Emerald Green | **AMOLED Pure Black (`#000000`)** |
+| `amoled-cyber` | Rose Pink Text | Neon Pink | **AMOLED Pure Black (`#000000`)** |
+| `amoled-espresso` | Latte Cream Text | Warm Bronze | **AMOLED Pure Black (`#000000`)** |
+| `amoled-crimson` | Rose Silver Text | Crimson Red | **AMOLED Pure Black (`#000000`)** |
+| `amoled-forest` | Pale Sage Text | Gold Amber | **AMOLED Pure Black (`#000000`)** |
+| `amoled-nordic` | Ice Blue Text | Polar Cyan | **AMOLED Pure Black (`#000000`)** |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🚀 Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. Prerequisites
+- **Node.js**: v18.0.0 or higher
+- **npm**: v9.0.0 or higher
+
+### 2. Installation
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/xrcodexcode/PIYUSH-S-DISPATCH.git
+cd newsletter
+npm install
+```
+
+### 3. Development Server
+Start the Next.js development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### 4. Build & Static Export
+Verify TypeScript types and build the optimized production output:
+```bash
+npx tsc --noEmit
+npm run build
+```
+
+### 5. Content & Maintenance Scripts
+- **Audit Links**:
+  ```bash
+  node scripts/audit-links.js
+  ```
+- **Renumber Issues**:
+  ```bash
+  node scripts/renumber-issues.js
+  ```
+- **Import Content**:
+  ```bash
+  npm run import
+  ```
+
+---
+
+## 📋 Quality & Verification Checklist
+
+Before deploying or committing changes:
+- [x] **TypeScript Check**: `npx tsc --noEmit` passes with 0 errors.
+- [x] **Link Audit**: `node scripts/audit-links.js` validates 0 broken or dummy links.
+- [x] **Static Generation**: `npm run build` succeeds and prerenders all pages cleanly.
+- [x] **Badge Standards**: All references match `DAILY-NODES#XXX` format.
+- [x] **Theme Verification**: Components use `var(--...)` custom properties without fixed hardcoded colors.
+
+---
+
+## 📄 License
+
+© 2026 **Piyush's Dispatch**. All rights reserved. Content published under personal technical distribution.

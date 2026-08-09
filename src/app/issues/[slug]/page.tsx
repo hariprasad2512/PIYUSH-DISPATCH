@@ -85,10 +85,7 @@ export default async function IssuePage({ params }: Props) {
   ]);
   const articleUrl = absoluteUrl(`/issues/${issue.slug}`);
   const articleImage = issue.heroImage ? absoluteUrl(issue.heroImage) : absoluteUrl(siteConfig.defaultImage);
-  const inThisIssue = [
-    issue.excerpt,
-    ...issue.topics.slice(0, 3).map((topic) => `Why ${topic} matters for builders and technical decision-makers.`),
-  ].filter(Boolean).slice(0, 4);
+
 
   const articleJsonLd = {
     '@context': 'https://schema.org',
@@ -209,7 +206,7 @@ export default async function IssuePage({ params }: Props) {
           <aside className="hidden lg:block lg:w-72 flex-shrink-0 order-1 sticky top-28 h-fit self-start space-y-8 non-reading-ui">
             <ArticleTOC headings={issue.headings} />
             <div className="pt-6 border-t border-[var(--border-color)]">
-              <ShareActions />
+              <ShareActions title={issue.title} />
             </div>
           </aside>
 
@@ -218,7 +215,7 @@ export default async function IssuePage({ params }: Props) {
             {/* Mobile Table of Contents & Share */}
             <div className="lg:hidden mb-8 space-y-6 non-reading-ui">
               <ArticleTOC headings={issue.headings} />
-              <ShareActions />
+              <ShareActions title={issue.title} />
             </div>
 
             {/* Audio Briefing Player (Interactive Text-to-Speech) */}
@@ -226,38 +223,28 @@ export default async function IssuePage({ params }: Props) {
               <AudioPlayer title={issue.title} readingTime={issue.readingTime} />
             </div>
 
-            <section className="mb-10 border border-[var(--border-color)] bg-[var(--surface)] rounded-2xl p-6 non-reading-ui">
-              <h2 className="font-mono text-xs font-bold tracking-widest uppercase text-[var(--accent)] mb-4">
-                In this issue
-              </h2>
-              <ul className="space-y-3 text-sm md:text-base text-[var(--text-primary)]">
-                {inThisIssue.map((item) => (
-                  <li key={item} className="flex gap-3 leading-relaxed">
-                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[var(--accent)] flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {issue.topics.map((topic) => (
-                  <Link
-                    key={topic}
-                    href={`/topics/${slugify(topic)}`}
-                    className="text-xs px-3 py-1 rounded-full bg-[var(--bg)] border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--accent)]"
-                  >
-                    {topic}
-                  </Link>
-                ))}
-              </div>
-            </section>
+
 
             <div className="prose prose-lg max-w-none">
               <MDXContent content={issue.content} />
             </div>
 
+            {/* End of Article Share Bar */}
+            <div className="mt-12 pt-8 border-t border-[var(--border-color)] non-reading-ui">
+              <div className="p-6 md:p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] text-center shadow-xs">
+                <h3 className="font-serif font-bold text-xl md:text-2xl text-[var(--text-primary)] mb-2">
+                  Share this dispatch
+                </h3>
+                <p className="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
+                  Help spread high-signal engineering and AI analysis across your network.
+                </p>
+                <ShareActions title={issue.title} layout="pill-bar" className="justify-center" />
+              </div>
+            </div>
+
             {/* Sources */}
             {issue.sources && issue.sources.length > 0 && (
-              <div id="sources" className="mt-16 pt-8 border-t border-[var(--border-color)] scroll-mt-28">
+              <div id="sources" className="mt-12 pt-8 border-t border-[var(--border-color)] scroll-mt-28">
                 <SourceList sources={issue.sources} />
               </div>
             )}

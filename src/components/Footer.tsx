@@ -13,7 +13,7 @@ export function Footer() {
               PIYUSH&apos;S DISPATCH
             </Link>
             <p className="text-[var(--text-secondary)] max-w-md mb-6 leading-relaxed text-base font-normal">
-              <strong className="text-[var(--text-primary)] font-semibold">Ideas, developments, and analysis worth knowing.</strong> Exploring AI, software architecture, machine learning, and startup strategy from first principles.
+              Understanding the technology behind the headlines, the architecture behind the products, and the ideas behind the companies shaping the future.
             </p>
             <div className="flex space-x-5 text-[var(--text-secondary)]">
               {/* X/Twitter */}
@@ -77,9 +77,7 @@ export function Footer() {
               <li><Link href="/subscribe" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Subscribe Daily</Link></li>
               <li><Link href="/search" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Archive Search</Link></li>
               <li><Link href="/issues/latest" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Today&apos;s Issue</Link></li>
-              <li><a href="/feed.xml" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">RSS Feed</a></li>
               <li><Link href="/contact" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Contact</Link></li>
-              <li><Link href="/privacy" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Privacy</Link></li>
             </ul>
           </div>
         </div>

@@ -23,8 +23,13 @@ export function RelatedIssues({ issues }: RelatedIssuesProps) {
               href={`/issues/${issue.slug}`}
               className="group flex flex-col bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 hover:shadow-lg hover:border-[var(--accent)] transition-all duration-300"
             >
-              <div className="text-xs font-mono text-[var(--accent)] font-semibold mb-3">
-                DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}
+              <div className="flex items-center justify-between text-xs font-mono text-[var(--text-secondary)] mb-3">
+                <span className="text-[var(--accent)] font-semibold">
+                  DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}
+                </span>
+                {issue.readingTime > 0 && (
+                  <span>{issue.readingTime} min read</span>
+                )}
               </div>
               
               <h3 className="font-serif text-xl font-bold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors line-clamp-2">

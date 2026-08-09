@@ -40,7 +40,7 @@ export async function getAllIssues(): Promise<Issue[]> {
         title: data.title || 'Untitled',
         subtitle: data.subtitle || '',
         excerpt: data.excerpt || '',
-        heroImage: data.heroImage || '',
+        heroImage: data.heroImage ? data.heroImage.replace(/\/issue(%23|#)/gi, '/issue-') : '',
         readingTime: calculateReadingTime(content),
         topics: data.topics || [],
         tags: data.tags || [],
