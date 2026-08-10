@@ -547,6 +547,17 @@ body.zen-mode .zen-exit-floating-btn {
   margin: 2rem 0;
 }
 
+/* Zen Focus / Fullscreen Mode Styles */
+body.zen-mode header,
+body.zen-mode footer,
+body.zen-mode .non-reading-ui {
+  display: none !important;
+}
+
+body.zen-mode article {
+  padding-top: 1.5rem !important;
+}
+
 /* Smooth Scoped Transitions */
 body,
 header,

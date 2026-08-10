@@ -144,7 +144,6 @@ export default async function IssuePage({ params }: Props) {
     <>
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbsJsonLd} />
-      <ReadingProgressBar />
       
       <article className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] pt-8 pb-24 transition-colors">
         {/* Article Top Controls Bar */}

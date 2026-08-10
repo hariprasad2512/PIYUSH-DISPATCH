@@ -8,19 +8,34 @@ import { cn } from '@/lib/utils';
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      setIsScrolled(currentScroll > 10);
+
+      const totalHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      ) - window.innerHeight;
+
+      if (totalHeight > 0) {
+        const pct = Math.min(100, Math.max(0, (currentScroll / totalHeight) * 100));
+        setScrollProgress(pct);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <header className={cn(
-      "sticky top-0 z-50 w-full transition-all duration-300 border-b border-transparent bg-[var(--bg)] text-[var(--text-primary)]",
-      isScrolled && "border-[var(--border-color)] shadow-xs bg-[var(--bg)]/90 backdrop-blur-md"
+      "sticky top-0 z-50 w-full transition-all duration-300 border-b border-transparent bg-[var(--bg)] text-[var(--text-primary)] relative",
+      isScrolled && "border-[var(--border-color)] shadow-xs bg-[var(--bg)]/95 backdrop-blur-md"
     )}>
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         <div className="flex justify-between items-center h-20">
@@ -84,6 +99,14 @@ export function Header() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Embedded Header Reading Progress Bar attached to sticky bottom edge */}
+      <div className="absolute bottom-0 left-0 right-0 h-[4px] bg-[var(--border-color)]/30 overflow-hidden pointer-events-none">
+        <div 
+          className="h-full bg-gradient-to-r from-[var(--accent)] via-purple-500 to-amber-500 transition-all duration-150 ease-out shadow-[0_0_8px_var(--accent)]"
+          style={{ width: `${scrollProgress}%` }}
+        />
       </div>
 
       {/* Mobile Menu */}

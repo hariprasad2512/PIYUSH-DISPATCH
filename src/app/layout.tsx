@@ -73,6 +73,7 @@ const themeInitScript = `
 `;
 
 import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal';
+import ReadingProgressBar from '@/components/ReadingProgressBar';
 
 export default function RootLayout({
   children,
@@ -115,6 +116,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-150 relative`}>
         <ThemeProvider>
+          <ReadingProgressBar />
           <Header />
           <main className="flex-1">
             {children}
