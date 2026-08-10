@@ -17,9 +17,8 @@ export function ArticleTOC({ headings }: ArticleTOCProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   
-  // Controls state: 'pinned' | 'auto' | 'hidden'
+  // Controls state: isPinned (always visible) vs auto-hide physics
   const [isPinned, setIsPinned] = useState(false);
-  const [isManualHidden, setIsManualHidden] = useState(false);
   const [isScrollHidden, setIsScrollHidden] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   
@@ -55,16 +54,16 @@ export function ArticleTOC({ headings }: ArticleTOCProps) {
     };
   }, [headings]);
 
-  // Scroll Autohide (only active if NOT pinned)
+  // Scroll Autohide Physics (active when NOT pinned)
   useEffect(() => {
     const handleScroll = () => {
-      if (isPinned) return; // Never hide if explicitly pinned!
+      if (isPinned) return; // Never hide when pinned
 
       const currentScrollY = window.scrollY;
       
-      if (currentScrollY > 250 && currentScrollY > lastScrollY.current + 10) {
+      if (currentScrollY > 200 && currentScrollY > lastScrollY.current + 8) {
         setIsScrollHidden(true);
-      } else if (currentScrollY < lastScrollY.current - 15 || currentScrollY < 150) {
+      } else if (currentScrollY < lastScrollY.current - 12 || currentScrollY < 150) {
         setIsScrollHidden(false);
       }
       
@@ -74,6 +73,17 @@ export function ArticleTOC({ headings }: ArticleTOCProps) {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isPinned]);
+
+  const handleTogglePin = () => {
+    const nextPinned = !isPinned;
+    setIsPinned(nextPinned);
+    if (!nextPinned) {
+      // Unpinning automatically hides if scrolled past top header
+      if (window.scrollY > 200) {
+        setIsScrollHidden(true);
+      }
+    }
+  };
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -87,22 +97,21 @@ export function ArticleTOC({ headings }: ArticleTOCProps) {
 
   if (headings.length === 0) return null;
 
-  // Determine visibility
-  const isVisible = isPinned || isHovered || (!isManualHidden && !isScrollHidden);
+  // Determine visibility based on physics: pinned, hovered, or scroll position
+  const isVisible = isPinned || isHovered || !isScrollHidden;
 
   return (
     <div className="w-full relative">
-      {/* Invisible Hover Trigger Zone along the left margin */}
+      {/* Hover Trigger Zone along the left margin */}
       <div 
         onMouseEnter={() => setIsHovered(true)}
         className="hidden lg:block fixed left-0 top-24 bottom-0 w-24 z-30 pointer-events-auto"
       />
 
-      {/* Floating Index Trigger Pill (Visible when Index is hidden) */}
+      {/* Floating Index Trigger Pill (Visible when Index is auto-hidden) */}
       {!isVisible && (
         <button
           onClick={() => {
-            setIsManualHidden(false);
             setIsScrollHidden(false);
             setIsHovered(true);
           }}
@@ -157,7 +166,7 @@ export function ArticleTOC({ headings }: ArticleTOCProps) {
         )}
       </div>
 
-      {/* Desktop View - Sticky Table of Contents with Pin & Hide Controls */}
+      {/* Desktop View - Sticky Table of Contents with Pin Control */}
       <div 
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -174,41 +183,23 @@ export function ArticleTOC({ headings }: ArticleTOCProps) {
             <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
           </h3>
 
-          <div className="flex items-center gap-1.5">
-            {/* Pin Toggle Button */}
-            <button
-              onClick={() => {
-                setIsPinned(!isPinned);
-                setIsManualHidden(false);
-              }}
-              title={isPinned ? "Unpin Table of Contents (Enable Autohide)" : "Pin Table of Contents (Always Visible)"}
-              className={cn(
-                "px-2 py-0.5 rounded text-[10px] font-mono transition-colors border flex items-center gap-1",
-                isPinned 
-                  ? "bg-[var(--accent)] text-white border-[var(--accent)] font-bold shadow-xs" 
-                  : "bg-[var(--surface)] text-[var(--text-secondary)] border-[var(--border-color)] hover:text-[var(--text-primary)]"
-              )}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="12" y1="17" x2="12" y2="22"/>
-                <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/>
-              </svg>
-              <span>{isPinned ? 'Pinned' : 'Pin'}</span>
-            </button>
-
-            {/* Manual Hide Button */}
-            <button
-              onClick={() => {
-                setIsPinned(false);
-                setIsManualHidden(true);
-                setIsHovered(false);
-              }}
-              title="Hide Index to floating pill"
-              className="px-2 py-0.5 rounded text-[10px] font-mono bg-[var(--surface)] text-[var(--text-secondary)] border border-[var(--border-color)] hover:text-[var(--text-primary)] hover:border-[var(--accent)] transition-colors"
-            >
-              Hide
-            </button>
-          </div>
+          {/* Pin Toggle Button */}
+          <button
+            onClick={handleTogglePin}
+            title={isPinned ? "Unpin Table of Contents (Enable Autohide)" : "Pin Table of Contents (Keep Always Visible)"}
+            className={cn(
+              "px-2.5 py-1 rounded-full text-[10px] font-mono transition-all border flex items-center gap-1 cursor-pointer",
+              isPinned 
+                ? "bg-[var(--accent)] text-white border-[var(--accent)] font-bold shadow-xs" 
+                : "bg-[var(--surface)] text-[var(--text-secondary)] border-[var(--border-color)] hover:text-[var(--text-primary)] hover:border-[var(--accent)]"
+            )}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="17" x2="12" y2="22"/>
+              <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/>
+            </svg>
+            <span>{isPinned ? 'Pinned' : 'Pin'}</span>
+          </button>
         </div>
 
         <ul className="space-y-2.5 text-xs border-l-2 border-[var(--border-color)] max-h-[calc(100vh-10rem)] overflow-y-auto pr-2">
