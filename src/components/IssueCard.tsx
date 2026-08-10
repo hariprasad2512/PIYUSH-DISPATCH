@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { IssueSummary } from '@/types';
 import { formatDate, cn } from '@/lib/utils';
+import BookmarkButton from './BookmarkButton';
 
 interface IssueCardProps {
   issue: IssueSummary;
@@ -23,7 +24,10 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
               The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}
             </span>
           </div>
-          <time dateTime={issue.date}>{formatDate(issue.date)}</time>
+          <div className="flex items-center gap-2">
+            <time dateTime={issue.date}>{formatDate(issue.date)}</time>
+            <BookmarkButton slug={issue.slug} compact />
+          </div>
         </div>
         
         <Link href={`/issues/${issue.slug}`} className="relative z-10 block group-hover:text-[var(--accent)] transition-colors">

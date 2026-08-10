@@ -40,6 +40,9 @@ export function Header() {
             <Link href="/issues?type=deep-node" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
               <span>🧠</span> The Deep Nodes
             </Link>
+            <Link href="/issues/saved" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
+              <span>🔖</span> Saved Vault
+            </Link>
             <Link href="/about" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">About</Link>
             
             <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-[var(--border-color)]">
@@ -90,6 +93,7 @@ export function Header() {
             <Link href="/issues" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">All Dispatches</Link>
             <Link href="/issues?type=daily-node" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">⚡ The Daily Nodes</Link>
             <Link href="/issues?type=deep-node" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">🧠 The Deep Nodes</Link>
+            <Link href="/issues/saved" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">🔖 Saved Vault</Link>
             <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">About</Link>
             <Link href="/search" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">Search</Link>
             <div className="pt-4 mt-2 border-t border-[var(--border-color)]">

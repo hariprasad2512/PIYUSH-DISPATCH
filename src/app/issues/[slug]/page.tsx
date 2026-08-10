@@ -21,6 +21,11 @@ import MDXContent from '@/components/MDXContent';
 import ZenReadingControls from '@/components/ZenReadingControls';
 import OptimizedImage from '@/components/OptimizedImage';
 import JsonLd from '@/components/JsonLd';
+import ReadingProgressBar from '@/components/ReadingProgressBar';
+import AudioPlayer from '@/components/AudioPlayer';
+import DispatchFeedback from '@/components/DispatchFeedback';
+import BookmarkButton from '@/components/BookmarkButton';
+import SubscribeDrawer from '@/components/SubscribeDrawer';
 import { absoluteUrl, siteConfig } from '@/lib/site';
 
 interface Props {
@@ -139,7 +144,7 @@ export default async function IssuePage({ params }: Props) {
     <>
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbsJsonLd} />
-      <ReadingProgress />
+      <ReadingProgressBar />
       
       <article className="min-h-screen bg-[var(--bg)] text-[var(--text-primary)] pt-8 pb-24 transition-colors">
         {/* Article Top Controls Bar */}
@@ -147,7 +152,10 @@ export default async function IssuePage({ params }: Props) {
           <Link href="/issues" className="text-xs font-mono font-medium text-[var(--text-secondary)] hover:text-[var(--accent)] flex items-center gap-1">
             <span aria-hidden="true">&larr;</span> Back to Archive
           </Link>
-          <ZenReadingControls />
+          <div className="flex items-center gap-3">
+            <BookmarkButton slug={issue.slug} />
+            <ZenReadingControls />
+          </div>
         </div>
 
         {/* Article Header */}
@@ -180,7 +188,7 @@ export default async function IssuePage({ params }: Props) {
         </header>
 
         {/* Hero Visual */}
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 mb-16 hero-image-wrapper">
+        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 mb-12 hero-image-wrapper">
           {issue.heroImage ? (
             <div className="relative max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-lg border border-[var(--border-color)] aspect-[21/9] bg-[var(--surface)]">
               <OptimizedImage
@@ -211,15 +219,24 @@ export default async function IssuePage({ params }: Props) {
 
           {/* Core Reading Column (Mathematically Centered) */}
           <div className="flex-1 max-w-[760px] mx-auto order-1 lg:order-2 w-full">
+            {/* Audio Player Bar */}
+            <div className="mb-10 non-reading-ui">
+              <AudioPlayer title={issue.title} textToRead={issue.content} readingTimeMinutes={issue.readingTime} />
+            </div>
+
             {/* Mobile Table of Contents & Share */}
             <div className="lg:hidden mb-8 space-y-6 non-reading-ui">
               <ArticleTOC headings={issue.headings} />
               <ShareActions title={issue.title} />
             </div>
 
-
             <div className="prose prose-lg max-w-none">
               <MDXContent content={issue.content} />
+            </div>
+
+            {/* Interactive Feedback & Rating Widget */}
+            <div className="mt-14 non-reading-ui">
+              <DispatchFeedback slug={issue.slug} />
             </div>
 
             {/* End of Article Share Bar */}
@@ -274,6 +291,7 @@ export default async function IssuePage({ params }: Props) {
         </div>
       </article>
 
+      <SubscribeDrawer />
       <BackToTop />
     </>
   );
