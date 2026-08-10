@@ -87,11 +87,11 @@ export default function IssueArchiveClient({ initialIssues }: IssueArchiveClient
   return (
     <div className="space-y-12 w-full">
       {/* Search Bar */}
-      <div className="bg-[var(--surface)] p-6 md:p-8 rounded-3xl border border-[var(--border-color)] shadow-xs">
+      <div className="bg-[var(--surface)] p-4 md:p-5 rounded-2xl border border-[var(--border-color)] shadow-2xs">
         <SearchBar
           value={searchQuery}
           onChange={setSearchQuery}
-          placeholder="Search dispatches, The Daily Nodes, Deep Nodes, topics..."
+          placeholder="Search dispatches, titles, keywords..."
         />
       </div>
 
