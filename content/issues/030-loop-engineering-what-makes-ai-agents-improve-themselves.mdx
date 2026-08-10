@@ -3,11 +3,9 @@ issueNumber: 5
 date: '2026-08-07'
 title: Loop Engineering — What Makes AI Agents Improve Themselves?
 subtitle: >-
-  Why the best AI output doesn't come from a single guess, but from continuous
-  self-refinement.
+  Why the best AI output doesn't come from a single guess, but from continuous self-refinement.
 excerpt: >-
-  Why the best AI output doesn't come from a single guess, but from continuous
-  self-refinement.
+  Why the best AI output doesn't come from a single guess, but from continuous self-refinement.
 heroImage: /assets/issue-5/1.jpg
 topics:
   - AI
@@ -38,7 +36,11 @@ nodeType: daily-node
 
 *Why the best AI output doesn't come from a single guess, but from continuous self-refinement.*
 
-![What is Loop Engineering?](/assets/issue-5/1.jpg)
+![What is Loop Engineering? Closed-Loop Feedback Engine](/assets/issue-5/1.jpg)
+
+> **TL;DR**: Great AI output rarely happens on the first try. **Loop Engineering** surrounds Large Language Models with iterative feedback loops—allowing agents to plan, execute, evaluate, reflect, and optimize their output until production benchmarks are satisfied.
+
+---
 
 Imagine asking a chef to cook a complex signature dish in one single attempt—without tasting the broth, adjusting the spices, or checking the oven temperature.
 
@@ -76,25 +78,6 @@ For simple questions, one-shot works fine. But for complex tasks—like writing 
 | **Error Handling** | Fails silently on mistake | Self-detects & fixes errors |
 | **Output Quality** | Capped by single guess | Compounding quality ceiling |
 | **Best For** | Quick Q&A, simple summaries | Coding, research, complex tasks |
-
----
-
-## The Core Loop
-
-Every loop engineering system operates on five fundamental steps:
-
-```text
-  ┌─────────────────────────────────────────────────────────────┐
-  │                                                             │
-  ▼                                                             │
-[Plan] ──► [Generate] ──► [Review] ──► [Improve] ──► (Repeat) ──┘
-```
-
-1. **Plan**: Deconstruct the objective into clear, manageable steps.
-2. **Generate**: Create the initial draft or execution attempt.
-3. **Review**: Evaluate output against strict constraints or test cases.
-4. **Improve**: Apply targeted corrections based on review feedback.
-5. **Repeat**: Pass refined context back into the loop until verified.
 
 ---
 
@@ -230,4 +213,3 @@ Follow these core engineering rules when building loop systems:
 
 **Q5: True or False: Adding more loop iterations always improves quality indefinitely.**
 - *Answer*: **False**. Quality plateaus after a few iterations, and excessive loops waste resources or over-edit content.
-
