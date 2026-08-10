@@ -74,7 +74,7 @@ export function Footer() {
           <div>
             <h3 className="font-semibold text-[var(--text-primary)] mb-4 text-xs font-mono tracking-widest uppercase">Publication</h3>
             <ul className="space-y-3">
-              <li><Link href="/subscribe" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Subscribe Daily</Link></li>
+              <li><a href="https://xrcodex.substack.com/subscribe" target="_blank" rel="noopener noreferrer" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm flex items-center gap-1"><span>Subscribe on Substack</span><span className="text-xs">↗</span></a></li>
               <li><Link href="/search" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Archive Search</Link></li>
               <li><Link href="/issues/latest" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Today&apos;s Issue</Link></li>
               <li><Link href="/contact" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">Contact</Link></li>

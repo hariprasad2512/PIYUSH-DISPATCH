@@ -13,42 +13,32 @@ export function SubscribeForm({ variant = 'inline' }: SubscribeFormProps) {
   const [message, setMessage] = useState('');
 
   const isFull = variant === 'full';
+  const substackBaseUrl = 'https://xrcodex.substack.com/subscribe';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email || !email.includes('@')) return;
 
     setStatus('loading');
-
-    const formData = new FormData(e.currentTarget);
+    const substackUrl = `${substackBaseUrl}?email=${encodeURIComponent(email)}`;
 
     try {
-      const response = await fetch('/api/subscribe', {
+      fetch('/api/subscribe', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          source: variant,
-          website: formData.get('website'),
-        }),
-      });
-
-      const result = await response.json() as { message?: string };
-
-      if (!response.ok) {
-        setStatus('error');
-        setMessage(result.message || 'Subscription failed. Please try again.');
-        return;
-      }
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: variant }),
+      }).catch(() => {});
 
       setStatus('success');
-      setMessage(result.message || "You're subscribed. Check your inbox for confirmation.");
-      setEmail('');
+      setMessage("Redirecting to Substack to confirm your subscription...");
+      
+      // Open Substack in new tab and redirect current window
+      window.open(substackUrl, '_blank', 'noopener,noreferrer');
+      setTimeout(() => {
+        window.location.href = substackUrl;
+      }, 1000);
     } catch {
-      setStatus('error');
-      setMessage('Subscription service is unavailable. Please try again later.');
+      window.location.href = substackUrl;
     }
   };
 
@@ -63,75 +53,76 @@ export function SubscribeForm({ variant = 'inline' }: SubscribeFormProps) {
       )}>
         
         <div className={cn(isFull ? "mb-8" : "flex-1")}>
+          <div className="flex items-center gap-2 mb-2 justify-center md:justify-start">
+            <span className="px-2.5 py-0.5 rounded-full bg-orange-500/10 text-orange-500 font-mono text-xs font-bold border border-orange-500/20">
+              Substack Integration
+            </span>
+          </div>
           <h2 className={cn(
             "font-serif font-bold text-[var(--text-primary)] mb-2",
             isFull ? "text-3xl md:text-4xl" : "text-2xl"
           )}>
             Get the daily dispatch.
           </h2>
-          <p className={cn(
-            "text-[var(--text-secondary)]",
-            isFull ? "text-lg max-w-xl mx-auto" : "text-base"
-          )}>
-            One thoughtful briefing on AI, software architecture, and technology shaping the future.
+          <p className="text-sm md:text-base text-[var(--text-secondary)]">
+            Join developers and founders receiving daily engineering briefings via Substack.
           </p>
         </div>
 
-        <div className={cn(isFull ? "max-w-md mx-auto w-full" : "w-full md:w-[380px]")}>
+        <div className={cn("w-full", !isFull ? "md:w-80" : "max-w-md mx-auto")}>
           {status === 'success' ? (
-            <div className="bg-green-500/10 border border-green-500/30 text-green-700 dark:text-green-300 p-4 rounded-2xl flex items-center justify-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              <p className="text-sm font-semibold">{message}</p>
+            <div className="p-4 rounded-2xl bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-center">
+              <p className="font-semibold text-[var(--accent)] text-sm mb-2">{message}</p>
+              <a
+                href={`${substackBaseUrl}?email=${encodeURIComponent(email)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--accent)] hover:underline"
+              >
+                <span>Click here if redirect doesn&apos;t start</span>
+                <span>&rarr;</span>
+              </a>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <input
-                type="text"
-                name="website"
-                tabIndex={-1}
-                autoComplete="off"
-                className="sr-only"
-                aria-hidden="true"
-              />
-              <div className="relative flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-4 text-[var(--text-secondary)]"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                <input 
-                  type="email" 
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address..." 
+                  placeholder="Enter your email"
                   required
-                  disabled={status === 'loading'}
-                  className="w-full pl-11 pr-4 py-3.5 bg-[var(--bg)] border border-[var(--border-color)] rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--accent)] text-[var(--text-primary)] text-sm disabled:opacity-50 transition-shadow"
+                  className="flex-1 px-4 py-3 rounded-full border border-[var(--border-color)] bg-[var(--bg)] text-[var(--text-primary)] placeholder-[var(--text-secondary)] text-sm focus:outline-none focus:border-[var(--accent)] transition-all"
                 />
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="bg-[var(--accent)] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-full text-sm transition-all shadow-xs hover:shadow-md cursor-pointer whitespace-nowrap"
+                >
+                  {status === 'loading' ? 'Connecting...' : 'Subscribe'}
+                </button>
               </div>
-              <button 
-                type="submit" 
-                disabled={status === 'loading'}
-                className="w-full bg-[var(--accent)] hover:opacity-90 text-white font-semibold py-3.5 rounded-full transition-all shadow-md disabled:opacity-70 flex justify-center items-center h-[48px] text-sm"
-              >
-                {status === 'loading' ? (
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                ) : (
-                  "Subscribe for Free"
-                )}
-              </button>
-              {status === 'error' && (
-                <p className="text-sm text-red-600 dark:text-red-300" role="alert">
-                  {message}
-                </p>
-              )}
+
+              <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] px-2 font-mono">
+                <span>Substack Verified</span>
+                <a
+                  href={substackBaseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--accent)] hover:underline font-semibold flex items-center gap-1"
+                >
+                  <span>Open Substack</span>
+                  <span>↗</span>
+                </a>
+              </div>
             </form>
           )}
-          {status !== 'success' && (
-            <p className="text-xs text-[var(--text-secondary)] mt-3 text-center">
-              Zero spam. Unsubscribe anytime.
-            </p>
+
+          {status === 'error' && (
+            <p className="mt-2 text-xs text-red-500 font-mono text-center">{message}</p>
           )}
         </div>
+
       </div>
     </div>
   );

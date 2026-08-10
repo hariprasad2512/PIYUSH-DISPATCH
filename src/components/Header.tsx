@@ -67,10 +67,15 @@ export function Header() {
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
               </Link>
-              <ThemeToggle />
-              <Link href="/subscribe" className="bg-[var(--accent)] hover:opacity-90 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-xs hover:shadow-md">
-                Subscribe
-              </Link>
+              <a 
+                href="https://xrcodex.substack.com/subscribe" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-[var(--accent)] hover:opacity-90 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-xs hover:shadow-md inline-flex items-center gap-1"
+              >
+                <span>Subscribe</span>
+                <span className="text-xs">↗</span>
+              </a>
             </div>
           </nav>
 
@@ -112,9 +117,15 @@ export function Header() {
             <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">About</Link>
             <Link href="/search" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">Search</Link>
             <div className="pt-4 mt-2 border-t border-[var(--border-color)]">
-              <Link href="/subscribe" onClick={() => setMobileMenuOpen(false)} className="block w-full text-center bg-[var(--accent)] text-white px-5 py-3 rounded-full text-base font-semibold shadow-md">
-                Subscribe
-              </Link>
+              <a 
+                href="https://xrcodex.substack.com/subscribe" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => setMobileMenuOpen(false)} 
+                className="block w-full text-center bg-[var(--accent)] text-white px-5 py-3 rounded-full text-base font-semibold shadow-md"
+              >
+                Subscribe on Substack ↗
+              </a>
             </div>
           </div>
         </div>

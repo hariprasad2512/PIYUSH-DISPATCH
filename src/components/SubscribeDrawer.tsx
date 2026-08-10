@@ -7,6 +7,8 @@ export function SubscribeDrawer() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
+  const substackBaseUrl = 'https://xrcodex.substack.com/subscribe';
+
   useEffect(() => {
     const isDismissed = sessionStorage.getItem('subscribe-drawer-dismissed');
     if (!isDismissed) {
@@ -25,25 +27,28 @@ export function SubscribeDrawer() {
     sessionStorage.setItem('subscribe-drawer-dismissed', 'true');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setSubmitted(true);
 
+    const substackUrl = `${substackBaseUrl}?email=${encodeURIComponent(email)}`;
+
     try {
-      await fetch('/api/subscribe', {
+      fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, source: 'sticky-drawer' }),
-      });
+      }).catch(() => {});
     } catch {
       // Fallback
     }
 
+    window.open(substackUrl, '_blank', 'noopener,noreferrer');
     setTimeout(() => {
-      window.open(`https://xrcodex.substack.com/subscribe?email=${encodeURIComponent(email)}`, '_blank');
+      window.location.href = substackUrl;
       handleDismiss();
-    }, 1200);
+    }, 600);
   };
 
   if (!isVisible) return null;
@@ -66,7 +71,7 @@ export function SubscribeDrawer() {
           <div className="text-center py-3 space-y-1">
             <div className="text-2xl">⚡</div>
             <h4 className="font-bold text-[var(--text-primary)] text-sm">Redirecting to Substack...</h4>
-            <p className="text-xs text-[var(--text-secondary)]">Confirming your subscription on Substack (xrcodex).</p>
+            <p className="text-xs text-[var(--text-secondary)]">Confirming your subscription on xrcodex.substack.com.</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -80,7 +85,7 @@ export function SubscribeDrawer() {
             <div>
               <h4 className="font-serif font-bold text-[var(--text-primary)] text-base">Enjoying this dispatch?</h4>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                Get new deep dives & daily nodes delivered straight to your inbox.
+                Get new deep dives & daily nodes delivered straight to your inbox via Substack.
               </p>
             </div>
 
