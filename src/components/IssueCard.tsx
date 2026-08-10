@@ -22,14 +22,6 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
             <span className="font-semibold text-[var(--accent)] bg-[var(--bg)] px-2.5 py-1 rounded-full border border-[var(--border-color)]">
               The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}
             </span>
-            <span className={cn(
-              "px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider border",
-              (issue.nodeType || 'daily-node') === 'deep-node'
-                ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30"
-                : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
-            )}>
-              {issue.nodeType === 'deep-node' ? 'DEEP-NODE' : 'DAILY-NODE'}
-            </span>
           </div>
           <time dateTime={issue.date}>{formatDate(issue.date)}</time>
         </div>
@@ -55,15 +47,7 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
       </div>
 
       <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between mt-auto relative z-10">
-        <div className="flex flex-wrap gap-1.5">
-          {issue.topics.slice(0, 2).map((topic) => (
-            <span key={topic} className="text-[11px] px-2.5 py-0.5 rounded-full bg-[var(--bg)] border border-[var(--border-color)] text-[var(--text-secondary)]">
-              {topic}
-            </span>
-          ))}
-        </div>
-        
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ml-auto">
           {issue.readingTime > 0 && (
             <span className="text-xs font-mono text-[var(--text-secondary)] flex items-center gap-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

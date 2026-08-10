@@ -36,17 +36,9 @@ export function RelatedIssues({ issues }: RelatedIssuesProps) {
                 {issue.title}
               </h3>
               
-              <p className="text-sm text-[var(--text-secondary)] mb-6 line-clamp-3 flex-grow leading-relaxed">
+              <p className="text-sm text-[var(--text-secondary)] line-clamp-3 flex-grow leading-relaxed">
                 {issue.excerpt}
               </p>
-              
-              <div className="flex flex-wrap gap-1.5 mt-auto">
-                {issue.topics.slice(0, 2).map((topic) => (
-                  <span key={topic} className="text-[10px] uppercase font-mono tracking-wider px-2 py-0.5 bg-[var(--bg)] border border-[var(--border-color)] rounded-full text-[var(--text-secondary)]">
-                    {topic}
-                  </span>
-                ))}
-              </div>
             </Link>
           ))}
         </div>

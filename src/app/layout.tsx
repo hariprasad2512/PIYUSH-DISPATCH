@@ -72,6 +72,8 @@ const themeInitScript = `
   })();
 `;
 
+import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal';
+
 export default function RootLayout({
   children,
 }: {
@@ -111,13 +113,16 @@ export default function RootLayout({
         <JsonLd data={websiteJsonLd} />
         <JsonLd data={personJsonLd} />
       </head>
-      <body className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-150`}>
+      <body className={`${inter.variable} ${playfair.variable} ${jetbrainsMono.variable} antialiased min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text-primary)] transition-colors duration-150 relative`}>
         <ThemeProvider>
           <Header />
           <main className="flex-1">
             {children}
           </main>
           <Footer />
+          <div className="fixed bottom-6 right-6 z-40">
+            <KeyboardShortcutsModal />
+          </div>
         </ThemeProvider>
       </body>
     </html>
