@@ -47,20 +47,20 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
       </div>
 
       <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between mt-auto relative z-10">
-        <div className="flex items-center gap-3 ml-auto">
-          {issue.readingTime > 0 && (
-            <span className="text-xs font-mono text-[var(--text-secondary)] flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-              {issue.readingTime} min read
-            </span>
-          )}
-          <Link href={`/issues/${issue.slug}`} className="text-xs font-semibold text-[var(--accent)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-            Read issue <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </div>
+        {issue.readingTime > 0 ? (
+          <span className="text-xs font-mono text-[var(--text-secondary)] flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            {issue.readingTime} min read
+          </span>
+        ) : (
+          <div />
+        )}
+        <Link href={`/issues/${issue.slug}`} className="text-xs font-semibold text-[var(--accent)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+          Read issue <span aria-hidden="true">&rarr;</span>
+        </Link>
       </div>
 
       {/* Clickable Card Link Overlay */}
