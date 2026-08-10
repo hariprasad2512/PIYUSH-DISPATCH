@@ -20,9 +20,9 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
       isCompact ? "p-4 md:p-5" : "p-5 md:p-6"
     )}>
       <div>
-        {/* Cover Image Container (DeepLearning.AI The Batch Style) */}
+        {/* Cover Image Container (Clean 100% Pristine Image with Zero Badge Overlap) */}
         {issue.heroImage && (
-          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-5 bg-[var(--bg)] border border-[var(--border-color)]">
+          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-4 bg-[var(--bg)] border border-[var(--border-color)]">
             <OptimizedImage
               src={issue.heroImage}
               alt={issue.title}
@@ -36,13 +36,6 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
               }
             />
 
-            {/* Badge Overlay on Cover Image - Placed at bottom-3 left-3 so top cover text is never hidden */}
-            <div className="absolute bottom-3 left-3 z-10">
-              <span className="font-mono text-[11px] font-bold px-3 py-1 rounded-full bg-[var(--bg)]/95 backdrop-blur-md border border-[var(--border-color)] text-[var(--accent)] shadow-sm">
-                {issueBadgeText}
-              </span>
-            </div>
-
             {/* Save Bookmark Overlay */}
             <div className="absolute top-3 right-3 z-10">
               <div className="bg-[var(--bg)]/90 backdrop-blur-md rounded-full p-1 border border-[var(--border-color)] shadow-xs">
@@ -52,9 +45,12 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
           </div>
         )}
 
-        {/* Issue Metadata */}
-        <div className="flex items-center justify-between gap-2 mb-3 text-xs font-mono text-[var(--text-secondary)]">
-          <div className="flex items-center gap-2">
+        {/* Issue Metadata & Badge Line (Zero Overlap on Image) */}
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3 text-xs font-mono text-[var(--text-secondary)]">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-mono text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)]">
+              {issueBadgeText}
+            </span>
             <time dateTime={issue.date}>{formatDate(issue.date)}</time>
           </div>
           {issue.readingTime > 0 && (
