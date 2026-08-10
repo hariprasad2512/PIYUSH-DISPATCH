@@ -101,14 +101,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Embedded Header Reading Progress Bar attached to sticky bottom edge */}
-      <div className="absolute bottom-0 left-0 right-0 h-[4px] bg-[var(--border-color)]/30 overflow-hidden pointer-events-none">
-        <div 
-          className="h-full bg-gradient-to-r from-[var(--accent)] via-purple-500 to-amber-500 transition-all duration-150 ease-out shadow-[0_0_8px_var(--accent)]"
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-[var(--border-color)] bg-[var(--bg)] px-6 py-6 shadow-xl">

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "import": "ts-node scripts/import-content.ts"
+    "import": "ts-node scripts/import-content.ts",
+    "sync:substack": "node scripts/sync-substack.js"
   },
   "dependencies": {
     "clsx": "^2.1.1",

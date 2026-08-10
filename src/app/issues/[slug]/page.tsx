@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import { 
   getAllIssues, 
   getIssueBySlug, 
@@ -9,24 +10,23 @@ import {
   getNextIssue 
 } from '@/lib/content';
 import { formatDate, slugify } from '@/lib/utils';
-import ReadingProgress from '@/components/ReadingProgress';
 import ArticleTOC from '@/components/ArticleTOC';
 import ShareActions from '@/components/ShareActions';
 import SourceList from '@/components/SourceList';
 import RelatedIssues from '@/components/RelatedIssues';
 import PrevNextNav from '@/components/PrevNextNav';
 import SubscribeForm from '@/components/SubscribeForm';
-import BackToTop from '@/components/BackToTop';
 import MDXContent from '@/components/MDXContent';
-import ZenReadingControls from '@/components/ZenReadingControls';
 import OptimizedImage from '@/components/OptimizedImage';
 import JsonLd from '@/components/JsonLd';
-import ReadingProgressBar from '@/components/ReadingProgressBar';
+import BookmarkButton from '@/components/BookmarkButton';
+import { absoluteUrl, siteConfig } from '@/lib/site';
+
 import AudioPlayer from '@/components/AudioPlayer';
 import DispatchFeedback from '@/components/DispatchFeedback';
-import BookmarkButton from '@/components/BookmarkButton';
 import SubscribeDrawer from '@/components/SubscribeDrawer';
-import { absoluteUrl, siteConfig } from '@/lib/site';
+import ZenReadingControls from '@/components/ZenReadingControls';
+import BackToTop from '@/components/BackToTop';
 
 interface Props {
   params: Promise<{
@@ -140,6 +140,9 @@ export default async function IssuePage({ params }: Props) {
     ],
   };
 
+  const substackSource = issue.sources?.find(s => s.url && s.url.includes('substack.com'));
+  const substackPostUrl = substackSource ? substackSource.url : 'https://xrcodex.substack.com';
+
   return (
     <>
       <JsonLd data={articleJsonLd} />
@@ -162,17 +165,21 @@ export default async function IssuePage({ params }: Props) {
           <div className="flex items-center justify-center gap-3 text-xs font-mono font-semibold text-[var(--accent)] mb-6 tracking-wider uppercase">
             <span>The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}</span>
             <span className="w-1 h-1 rounded-full bg-current" />
-            <time dateTime={issue.date}>{formatDate(issue.date)}</time>
-            <span className="w-1 h-1 rounded-full bg-current" />
             <span>{issue.readingTime} min read</span>
+            {issue.nodeType && (
+              <>
+                <span className="w-1 h-1 rounded-full bg-current" />
+                <span className="capitalize">{issue.nodeType.replace('-', ' ')}</span>
+              </>
+            )}
           </div>
           
-          <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-[var(--text-primary)] max-w-5xl mx-auto">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[var(--text-primary)] max-w-4xl mx-auto leading-[1.1] mb-6 tracking-tight">
             {issue.title}
           </h1>
           
           {issue.subtitle && (
-            <p className="text-xl md:text-2xl text-[var(--text-secondary)] font-light leading-relaxed max-w-3xl mx-auto italic">
+            <p className="text-lg sm:text-xl text-[var(--text-secondary)] max-w-3xl mx-auto font-sans font-normal leading-relaxed">
               {issue.subtitle}
             </p>
           )}
@@ -208,11 +215,11 @@ export default async function IssuePage({ params }: Props) {
         {/* Perfectly Centered Main Reading Layout */}
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 flex flex-col lg:flex-row gap-8 lg:gap-12 relative justify-between items-start">
           
-          {/* Left Sidebar - Sticky Table of Contents & Share Actions */}
-          <aside className="hidden lg:block lg:w-72 flex-shrink-0 order-1 sticky top-28 h-fit self-start space-y-8 non-reading-ui">
+          {/* Left Sidebar - Permanently Sticky Table of Contents & Share Actions */}
+          <aside className="hidden lg:block lg:w-72 flex-shrink-0 order-1 sticky top-24 h-fit self-start space-y-6 non-reading-ui z-40">
             <ArticleTOC headings={issue.headings} />
-            <div className="pt-6 border-t border-[var(--border-color)]">
-              <ShareActions title={issue.title} />
+            <div className="p-4 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] shadow-xs">
+              <ShareActions title={issue.title} substackUrl={substackPostUrl} />
             </div>
           </aside>
 
@@ -226,7 +233,7 @@ export default async function IssuePage({ params }: Props) {
             {/* Mobile Table of Contents & Share */}
             <div className="lg:hidden mb-8 space-y-6 non-reading-ui">
               <ArticleTOC headings={issue.headings} />
-              <ShareActions title={issue.title} />
+              <ShareActions title={issue.title} substackUrl={substackPostUrl} />
             </div>
 
             <div className="prose prose-lg max-w-none">
@@ -247,16 +254,14 @@ export default async function IssuePage({ params }: Props) {
                 <p className="text-sm text-[var(--text-secondary)] mb-6 max-w-md mx-auto">
                   Help spread high-signal engineering and AI analysis across your network.
                 </p>
-                <ShareActions title={issue.title} layout="pill-bar" className="justify-center" />
+                <ShareActions title={issue.title} substackUrl={substackPostUrl} className="items-center justify-center" />
               </div>
             </div>
 
-            {/* Sources */}
-            {issue.sources && issue.sources.length > 0 && (
-              <div id="sources" className="mt-12 pt-8 border-t border-[var(--border-color)] scroll-mt-28">
-                <SourceList sources={issue.sources} />
-              </div>
-            )}
+            {/* Sources & Substack Original Provenance */}
+            <div id="sources" className="mt-12 pt-8 border-t border-[var(--border-color)] scroll-mt-28">
+              <SourceList sources={issue.sources || []} />
+            </div>
           </div>
 
           {/* Right Balancing Column (Equal width lg:w-72 for 100% perfect center alignment) */}

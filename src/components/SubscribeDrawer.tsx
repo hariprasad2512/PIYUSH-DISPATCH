@@ -25,23 +25,35 @@ export function SubscribeDrawer() {
     sessionStorage.setItem('subscribe-drawer-dismissed', 'true');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     setSubmitted(true);
+
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'sticky-drawer' }),
+      });
+    } catch {
+      // Fallback
+    }
+
     setTimeout(() => {
+      window.open(`https://xrcodex.substack.com/subscribe?email=${encodeURIComponent(email)}`, '_blank');
       handleDismiss();
-    }, 2500);
+    }, 1200);
   };
 
   if (!isVisible) return null;
 
   return (
     <aside className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md z-50 animate-slideUp">
-      <div className="bg-[var(--surface)] border border-[var(--border-color)] p-5 rounded-2xl shadow-xl backdrop-blur-md relative">
+      <div className="bg-[var(--surface)] border border-[var(--border-color)] p-5 rounded-2xl shadow-2xl backdrop-blur-md relative">
         <button
           onClick={handleDismiss}
-          className="absolute top-3 right-3 text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-1 rounded-full hover:bg-[var(--bg)] transition-colors"
+          className="absolute top-3 right-3 text-[var(--text-secondary)] hover:text-[var(--text-primary)] p-1 rounded-full hover:bg-[var(--bg)] transition-colors cursor-pointer"
           aria-label="Dismiss newsletter drawer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -51,26 +63,24 @@ export function SubscribeDrawer() {
         </button>
 
         {submitted ? (
-          <div className="text-center py-2 space-y-1">
-            <div className="text-2xl">🎉</div>
-            <h4 className="font-bold text-[var(--text-primary)] text-sm">Welcome aboard!</h4>
-            <p className="text-xs text-[var(--text-secondary)]">You are now subscribed to Piyush's Dispatch.</p>
+          <div className="text-center py-3 space-y-1">
+            <div className="text-2xl">⚡</div>
+            <h4 className="font-bold text-[var(--text-primary)] text-sm">Redirecting to Substack...</h4>
+            <p className="text-xs text-[var(--text-secondary)]">Confirming your subscription on Substack (xrcodex).</p>
           </div>
         ) : (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--accent)]">
-                Piyush's Dispatch Weekly
+              <span className="px-2 py-0.5 rounded-md bg-orange-500/10 text-orange-500 text-[10px] font-mono font-bold uppercase tracking-wider border border-orange-500/20">
+                Substack Connected
               </span>
+              <span className="text-[11px] font-mono text-[var(--text-secondary)]">xrcodex.substack.com</span>
             </div>
 
             <div>
-              <h4 className="font-bold text-sm text-[var(--text-primary)] leading-tight">
-                High-Signal AI & Engineering Briefings
-              </h4>
+              <h4 className="font-serif font-bold text-[var(--text-primary)] text-base">Enjoying this dispatch?</h4>
               <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-                Join 10,000+ developers, researchers, and technical leaders.
+                Get new deep dives & daily nodes delivered straight to your inbox.
               </p>
             </div>
 
@@ -80,14 +90,14 @@ export function SubscribeDrawer() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address..."
-                className="flex-1 bg-[var(--bg)] border border-[var(--border-color)] px-3 py-2 rounded-xl text-xs text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:border-[var(--accent)]"
+                placeholder="your.email@domain.com"
+                className="flex-1 bg-[var(--bg)] border border-[var(--border-color)] px-3 py-2 rounded-xl text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)]"
               />
               <button
                 type="submit"
-                className="bg-[var(--accent)] text-white px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90 transition-opacity active:scale-95 shadow-2xs shrink-0"
+                className="bg-[var(--accent)] hover:opacity-90 text-white px-4 py-2 rounded-xl text-xs font-semibold shrink-0 shadow-xs cursor-pointer"
               >
-                Join Free
+                Subscribe
               </button>
             </form>
           </div>

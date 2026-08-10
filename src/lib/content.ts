@@ -6,10 +6,14 @@ import { calculateReadingTime, extractHeadings, slugify } from './utils';
 
 const contentDir = path.join(process.cwd(), 'content', 'issues');
 
-// Fast In-Memory Cache for 0ms Server-Side Reads
+// High-Performance In-Memory O(1) Indexing Engine
 let cachedIssues: Issue[] | null = null;
+let cachedSummaries: IssueSummary[] | null = null;
+let cachedSlugMap: Map<string, Issue> | null = null;
+let cachedTopics: Topic[] | null = null;
 let cacheTime: number = 0;
-const CACHE_TTL_MS = 10000; // 10 seconds cache TTL for development hot-reloading
+
+const CACHE_TTL_MS = process.env.NODE_ENV === 'production' ? Infinity : 5000;
 
 export async function getAllIssues(): Promise<Issue[]> {
   const now = Date.now();
@@ -22,128 +26,149 @@ export async function getAllIssues(): Promise<Issue[]> {
   }
 
   const files = fs.readdirSync(contentDir);
-  const issues = files
-    .filter((file) => file.endsWith('.mdx') || file.endsWith('.md'))
-    .map((file) => {
-      const fullPath = path.join(contentDir, file);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
-      const { data, content } = matter(fileContents);
+  const issues: Issue[] = [];
+  const slugMap = new Map<string, Issue>();
 
-      const id = file.replace(/\.mdx?$/, '');
-      const slug = data.slug || id;
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (!file.endsWith('.mdx') && !file.endsWith('.md')) continue;
 
-      return {
-        id,
-        slug,
-        issueNumber: data.issueNumber || 0,
-        date: data.date || new Date().toISOString(),
-        title: data.title || 'Untitled',
-        subtitle: data.subtitle || '',
-        excerpt: data.excerpt || '',
-        heroImage: data.heroImage ? data.heroImage.replace(/\/issue(%23|#)/gi, '/issue-') : '',
-        readingTime: calculateReadingTime(content),
-        topics: data.topics || [],
-        tags: data.tags || [],
-        content,
-        headings: extractHeadings(content),
-        sources: data.sources || [],
-        relatedIssues: data.relatedIssues || [],
-        published: data.published !== false,
-        nodeType: data.nodeType || (data.issueNumber === 5 || data.issueNumber === 6 ? 'deep-node' : 'daily-node'),
-      } as Issue;
-    })
-    .filter(issue => issue.published);
+    const fullPath = path.join(contentDir, file);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data, content } = matter(fileContents);
 
-  // Sort by issue number descending
-  const sorted = issues.sort((a, b) => b.issueNumber - a.issueNumber);
-  cachedIssues = sorted;
-  cacheTime = now;
-  return sorted;
-}
+    if (data.published === false) continue;
 
-export async function getIssueSummaries(): Promise<IssueSummary[]> {
-  const issues = await getAllIssues();
-  const articleOnlyFields = new Set(['content', 'headings', 'sources', 'relatedIssues', 'published']);
-  return issues.map((issue) => Object.fromEntries(
-    Object.entries(issue).filter(([key]) => !articleOnlyFields.has(key))
-  ) as IssueSummary);
-}
+    const id = file.replace(/\.mdx?$/, '');
+    const slug = data.slug || id;
+    const issueNum = data.issueNumber || 0;
 
-export async function getIssueBySlug(slug: string): Promise<Issue | null> {
-  const issues = await getAllIssues();
-  if (!slug) return null;
-  if (slug === 'latest' && issues.length > 0) return issues[0];
+    const issueObj: Issue = {
+      id,
+      slug,
+      issueNumber: issueNum,
+      date: data.date || new Date().toISOString(),
+      title: data.title || 'Untitled',
+      subtitle: data.subtitle || '',
+      excerpt: data.excerpt || '',
+      heroImage: data.heroImage ? data.heroImage.replace(/\/issue(%23|#)/gi, '/issue-') : '',
+      readingTime: calculateReadingTime(content),
+      topics: data.topics || [],
+      tags: data.tags || [],
+      content,
+      headings: extractHeadings(content),
+      sources: data.sources || [],
+      relatedIssues: data.relatedIssues || [],
+      published: true,
+      nodeType: data.nodeType || 'daily-node',
+    };
 
-  const cleanSlug = slug.toLowerCase().trim();
-  return issues.find((issue) => 
-    issue.slug.toLowerCase() === cleanSlug || 
-    issue.id.toLowerCase() === cleanSlug ||
-    `daily-nodes-${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase() === cleanSlug ||
-    `daily-nodes-${issue.issueNumber}`.toLowerCase() === cleanSlug
-  ) || null;
-}
+    issues.push(issueObj);
 
-export async function getIssuesByTopic(topicSlug: string): Promise<Issue[]> {
-  const issues = await getAllIssues();
-  return issues.filter((issue) => 
-    issue.topics.some(topic => slugify(topic) === topicSlug)
+    // Fast O(1) Slug & Alias Lookup Indexing
+    const lowerSlug = slug.toLowerCase().trim();
+    const lowerId = id.toLowerCase().trim();
+    const padNum = String(issueNum).padStart(3, '0');
+
+    slugMap.set(lowerSlug, issueObj);
+    slugMap.set(lowerId, issueObj);
+    slugMap.set(`daily-nodes-${padNum}`.toLowerCase(), issueObj);
+    slugMap.set(`daily-nodes-${issueNum}`.toLowerCase(), issueObj);
+  }
+
+  // Pre-sort chronological order descending once
+  issues.sort((a, b) => b.issueNumber - a.issueNumber);
+
+  // Pre-compute summaries array once to avoid runtime Object.entries allocations
+  const articleFields = new Set(['content', 'headings', 'sources', 'relatedIssues', 'published']);
+  cachedSummaries = issues.map((issue) =>
+    Object.fromEntries(
+      Object.entries(issue).filter(([key]) => !articleFields.has(key))
+    ) as IssueSummary
   );
-}
 
-export async function getAllTopics(): Promise<Topic[]> {
-  const issues = await getAllIssues();
+  // Pre-compute topic index once
   const topicMap = new Map<string, Topic>();
-
   issues.forEach((issue) => {
     issue.topics.forEach((topicName) => {
-      const slug = slugify(topicName);
-      if (topicMap.has(slug)) {
-        topicMap.get(slug)!.count++;
+      const s = slugify(topicName);
+      const existing = topicMap.get(s);
+      if (existing) {
+        existing.count++;
       } else {
-        topicMap.set(slug, {
+        topicMap.set(s, {
           name: topicName,
-          slug,
+          slug: s,
           count: 1,
           description: `Articles and issues related to ${topicName}`,
         });
       }
     });
   });
+  cachedTopics = Array.from(topicMap.values()).sort((a, b) => b.count - a.count);
 
-  return Array.from(topicMap.values()).sort((a, b) => b.count - a.count);
+  cachedIssues = issues;
+  cachedSlugMap = slugMap;
+  cacheTime = now;
+  return issues;
+}
+
+export async function getIssueSummaries(): Promise<IssueSummary[]> {
+  await getAllIssues();
+  return cachedSummaries || [];
+}
+
+export async function getIssueBySlug(slug: string): Promise<Issue | null> {
+  await getAllIssues();
+  if (!slug) return null;
+  const cleanSlug = slug.toLowerCase().trim();
+  if (cleanSlug === 'latest' && cachedIssues && cachedIssues.length > 0) {
+    return cachedIssues[0];
+  }
+  return cachedSlugMap?.get(cleanSlug) || null;
+}
+
+export async function getIssuesByTopic(topicSlug: string): Promise<Issue[]> {
+  const issues = await getAllIssues();
+  return issues.filter((issue) =>
+    issue.topics.some(topic => slugify(topic) === topicSlug)
+  );
+}
+
+export async function getAllTopics(): Promise<Topic[]> {
+  await getAllIssues();
+  return cachedTopics || [];
 }
 
 export async function getRelatedIssues(issue: Issue, limit: number = 3): Promise<Issue[]> {
   const issues = await getAllIssues();
-  
-  if (issue.relatedIssues && issue.relatedIssues.length > 0) {
-    const explicitlyRelated = issues.filter(i => issue.relatedIssues.includes(i.slug) && i.slug !== issue.slug);
-    if (explicitlyRelated.length >= limit) return explicitlyRelated.slice(0, limit);
-    
-    const relatedByTopic = issues
-      .filter(i => i.slug !== issue.slug && !issue.relatedIssues.includes(i.slug))
-      .map(i => {
-        const commonTopics = i.topics.filter(t => issue.topics.includes(t)).length;
-        return { issue: i, score: commonTopics };
-      })
-      .filter(i => i.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .map(i => i.issue);
-      
-    return [...explicitlyRelated, ...relatedByTopic].slice(0, limit);
-  }
 
-  const relatedByTopic = issues
-    .filter(i => i.slug !== issue.slug)
+  // The next issue chronologically should come FIRST in Continue Reading
+  const nextIssue = (await getNextIssue(issue.issueNumber)) || issues.find(i => i.issueNumber === 1) || null;
+
+  const candidates = issues.filter(i => i.slug !== issue.slug && (!nextIssue || i.slug !== nextIssue.slug));
+
+  const sortedByTopic = candidates
     .map(i => {
       const commonTopics = i.topics.filter(t => issue.topics.includes(t)).length;
       return { issue: i, score: commonTopics };
     })
-    .filter(i => i.score > 0)
     .sort((a, b) => b.score - a.score)
     .map(i => i.issue);
 
-  return relatedByTopic.slice(0, limit);
+  const result: Issue[] = [];
+  if (nextIssue && nextIssue.slug !== issue.slug) {
+    result.push(nextIssue);
+  }
+
+  for (const item of sortedByTopic) {
+    if (result.length >= limit) break;
+    if (!result.some(r => r.slug === item.slug)) {
+      result.push(item);
+    }
+  }
+
+  return result.slice(0, limit);
 }
 
 export async function getPreviousIssue(issueNumber: number): Promise<Issue | null> {
@@ -158,10 +183,10 @@ export async function getNextIssue(issueNumber: number): Promise<Issue | null> {
 
 export async function searchIssues(query: string): Promise<Issue[]> {
   if (!query || query.trim() === '') return [];
-  
+
   const issues = await getAllIssues();
   const q = query.toLowerCase().trim();
-  
+
   return issues.filter(issue => {
     const badgeText = `the daily nodes #${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
     const rawBadgeText = `daily-nodes#${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();

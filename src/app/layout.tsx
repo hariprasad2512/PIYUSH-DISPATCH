@@ -72,7 +72,6 @@ const themeInitScript = `
   })();
 `;
 
-import KeyboardShortcutsModal from '@/components/KeyboardShortcutsModal';
 import ReadingProgressBar from '@/components/ReadingProgressBar';
 
 export default function RootLayout({
@@ -122,9 +121,6 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
-          <div className="fixed bottom-6 right-6 z-40">
-            <KeyboardShortcutsModal />
-          </div>
         </ThemeProvider>
       </body>
     </html>

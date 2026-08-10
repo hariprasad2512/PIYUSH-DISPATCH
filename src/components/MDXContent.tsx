@@ -49,6 +49,9 @@ renderer.image = function({ href, title, text }) {
         alt="${caption}" 
         loading="lazy" 
         decoding="async"
+        width="1376"
+        height="768"
+        style="aspect-ratio: 1376 / 768;"
         class="rounded-2xl border border-[var(--border-color)] shadow-lg w-full max-w-4xl mx-auto object-cover bg-[var(--surface)] transition-transform duration-300 hover:scale-[1.01]" 
         onerror="this.onerror=null; this.style.display='none';"
       />

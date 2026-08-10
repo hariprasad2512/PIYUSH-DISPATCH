@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { IssueSummary } from '@/types';
 import { formatDate, cn } from '@/lib/utils';
 import BookmarkButton from './BookmarkButton';
+import OptimizedImage from './OptimizedImage';
 
 interface IssueCardProps {
   issue: IssueSummary;
@@ -11,59 +12,97 @@ interface IssueCardProps {
 
 export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
   const isCompact = variant === 'compact';
+  const issueBadgeText = `The Daily Nodes #${String(issue.issueNumber).padStart(3, '0')}`;
 
   return (
     <article className={cn(
-      "group relative bg-[var(--surface)] transition-all duration-300 border border-[var(--border-color)] rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:shadow-lg hover:border-[var(--accent)]",
-      isCompact ? "py-6" : "py-8"
+      "group relative bg-[var(--surface)] transition-all duration-300 border border-[var(--border-color)] rounded-2xl overflow-hidden flex flex-col justify-between hover:shadow-xl hover:border-[var(--accent)]",
+      isCompact ? "p-4 md:p-5" : "p-5 md:p-6"
     )}>
       <div>
-        <div className="flex items-center justify-between gap-4 mb-4 text-xs font-mono text-[var(--text-secondary)]">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-[var(--accent)] bg-[var(--bg)] px-2.5 py-1 rounded-full border border-[var(--border-color)]">
-              The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}
-            </span>
+        {/* Cover Image Container (DeepLearning.AI The Batch Style) */}
+        {issue.heroImage && (
+          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden mb-5 bg-[var(--bg)] border border-[var(--border-color)]">
+            <OptimizedImage
+              src={issue.heroImage}
+              alt={issue.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+              fallback={
+                <div className="absolute inset-0 bg-gradient-to-tr from-[var(--surface)] to-[var(--bg)] flex items-center justify-center p-4 text-center">
+                  <span className="font-mono text-xs text-[var(--accent)] font-bold">{issueBadgeText}</span>
+                </div>
+              }
+            />
+
+            {/* Badge Overlay on Cover Image */}
+            <div className="absolute top-3 left-3 z-10">
+              <span className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-[var(--bg)]/90 backdrop-blur-md border border-[var(--border-color)] text-[var(--accent)] shadow-xs">
+                {issueBadgeText}
+              </span>
+            </div>
+
+            {/* Save Bookmark Overlay */}
+            <div className="absolute top-3 right-3 z-10">
+              <div className="bg-[var(--bg)]/90 backdrop-blur-md rounded-full p-1 border border-[var(--border-color)] shadow-xs">
+                <BookmarkButton slug={issue.slug} compact />
+              </div>
+            </div>
           </div>
+        )}
+
+        {/* Issue Metadata */}
+        <div className="flex items-center justify-between gap-2 mb-3 text-xs font-mono text-[var(--text-secondary)]">
           <div className="flex items-center gap-2">
             <time dateTime={issue.date}>{formatDate(issue.date)}</time>
-            <BookmarkButton slug={issue.slug} compact />
           </div>
+          {issue.readingTime > 0 && (
+            <span>{issue.readingTime} min read</span>
+          )}
         </div>
         
+        {/* Title */}
         <Link href={`/issues/${issue.slug}`} className="relative z-10 block group-hover:text-[var(--accent)] transition-colors">
           <h3 className={cn(
-            "font-serif font-bold text-[var(--text-primary)] leading-tight mb-3",
-            isCompact ? "text-xl" : "text-2xl"
+            "font-serif font-bold text-[var(--text-primary)] leading-tight mb-2.5",
+            isCompact ? "text-lg" : "text-xl md:text-2xl"
           )}>
             {issue.title}
           </h3>
         </Link>
 
+        {/* Subtitle */}
         {issue.subtitle && (
-          <p className="text-sm font-medium text-[var(--text-secondary)] mb-3 line-clamp-1 italic">
+          <p className="text-xs md:text-sm font-medium text-[var(--text-secondary)] mb-3 line-clamp-1 italic">
             {issue.subtitle}
           </p>
         )}
 
-        <p className="text-sm text-[var(--text-secondary)] mb-6 leading-relaxed line-clamp-3">
+        {/* Excerpt */}
+        <p className="text-xs md:text-sm text-[var(--text-secondary)] mb-5 leading-relaxed line-clamp-2">
           {issue.excerpt}
         </p>
+
+        {/* Topic Tags */}
+        {issue.topics && issue.topics.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4 relative z-10">
+            {issue.topics.slice(0, 3).map((topic, i) => (
+              <span key={i} className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[var(--bg)] border border-[var(--border-color)] text-[var(--text-secondary)] uppercase tracking-wider">
+                #{topic}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
+      {/* Card Footer Link */}
       <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between mt-auto relative z-10">
-        {issue.readingTime > 0 ? (
-          <span className="text-xs font-mono text-[var(--text-secondary)] flex items-center gap-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
-            {issue.readingTime} min read
-          </span>
-        ) : (
-          <div />
-        )}
+        <span className="text-xs font-mono text-[var(--text-secondary)]">
+          The Daily Nodes
+        </span>
         <Link href={`/issues/${issue.slug}`} className="text-xs font-semibold text-[var(--accent)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-          Read issue <span aria-hidden="true">&rarr;</span>
+          Read dispatch <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
 

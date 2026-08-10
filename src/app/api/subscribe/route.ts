@@ -27,13 +27,14 @@ export async function POST(request: Request) {
     return Response.json({ message: 'Enter a valid email address.' }, { status: 400 });
   }
 
+  const substackRedirectUrl = `https://xrcodex.substack.com/subscribe?email=${encodeURIComponent(email)}`;
   const endpoint = process.env.NEWSLETTER_SUBSCRIBE_ENDPOINT;
   const apiKey = process.env.NEWSLETTER_API_KEY;
 
   if (!endpoint || !apiKey) {
-    // In local development or unconfigured mode, simulate successful subscription
     return Response.json({
-      message: "You're subscribed! (Dev Mode: Email captured successfully)",
+      message: "You're subscribed! Redirecting to Substack to confirm...",
+      redirectUrl: substackRedirectUrl,
     });
   }
 
@@ -52,16 +53,19 @@ export async function POST(request: Request) {
 
     if (!response.ok) {
       return Response.json(
-        { message: 'The newsletter provider rejected the signup. Please try again later.' },
-        { status: 502 }
+        { message: 'Could not complete subscription right now.' },
+        { status: 500 }
       );
     }
 
-    return Response.json({ message: "You're subscribed. Check your inbox for confirmation." });
+    return Response.json({
+      message: "Subscription confirmed! Redirecting to Substack...",
+      redirectUrl: substackRedirectUrl,
+    });
   } catch {
     return Response.json(
-      { message: 'Subscription service is temporarily unavailable. Please try again later.' },
-      { status: 502 }
+      { message: 'Network error. Please try again.' },
+      { status: 500 }
     );
   }
 }
