@@ -32,12 +32,17 @@ export function Header() {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8 items-center">
-            <Link href="/issues" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors text-base font-medium">All Dispatches</Link>
-            <Link href="/topics" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors text-base font-medium">Topics</Link>
-            <Link href="/about" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors text-base font-medium">About</Link>
+          <nav className="hidden md:flex space-x-6 lg:space-x-8 items-center text-sm font-medium">
+            <Link href="/issues" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">All Dispatches</Link>
+            <Link href="/issues?type=daily-node" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
+              <span>⚡</span> The Daily Nodes
+            </Link>
+            <Link href="/issues?type=deep-node" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
+              <span>🧠</span> The Deep Nodes
+            </Link>
+            <Link href="/about" className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors">About</Link>
             
-            <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-[var(--border-color)]">
+            <div className="flex items-center space-x-4 ml-2 pl-4 border-l border-[var(--border-color)]">
               <Link href="/search" aria-label="Search" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors p-2 rounded-full hover:bg-[var(--surface)]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8"></circle>
@@ -45,7 +50,7 @@ export function Header() {
                 </svg>
               </Link>
               <ThemeToggle />
-              <Link href="/subscribe" className="bg-[var(--accent)] hover:opacity-90 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-xs hover:shadow-md">
+              <Link href="/subscribe" className="bg-[var(--accent)] hover:opacity-90 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-xs hover:shadow-md">
                 Subscribe
               </Link>
             </div>
@@ -83,7 +88,8 @@ export function Header() {
         <div className="md:hidden border-t border-[var(--border-color)] bg-[var(--bg)] px-6 py-6 shadow-xl">
           <div className="space-y-2">
             <Link href="/issues" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">All Dispatches</Link>
-            <Link href="/topics" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">Topics</Link>
+            <Link href="/issues?type=daily-node" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">⚡ The Daily Nodes</Link>
+            <Link href="/issues?type=deep-node" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">🧠 The Deep Nodes</Link>
             <Link href="/about" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">About</Link>
             <Link href="/search" onClick={() => setMobileMenuOpen(false)} className="block px-4 py-3 text-lg font-medium text-[var(--text-primary)] hover:bg-[var(--surface)] rounded-xl">Search</Link>
             <div className="pt-4 mt-2 border-t border-[var(--border-color)]">

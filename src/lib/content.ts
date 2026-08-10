@@ -49,6 +49,7 @@ export async function getAllIssues(): Promise<Issue[]> {
         sources: data.sources || [],
         relatedIssues: data.relatedIssues || [],
         published: data.published !== false,
+        nodeType: data.nodeType || (data.issueNumber === 5 || data.issueNumber === 6 ? 'deep-node' : 'daily-node'),
       } as Issue;
     })
     .filter(issue => issue.published);
@@ -152,28 +153,38 @@ export async function getPreviousIssue(issueNumber: number): Promise<Issue | nul
 
 export async function getNextIssue(issueNumber: number): Promise<Issue | null> {
   const issues = await getAllIssues();
-  for (let i = issues.length - 1; i >= 0; i--) {
-    if (issues[i].issueNumber > issueNumber) {
-      return issues[i];
-    }
-  }
-  return null;
+  return [...issues].reverse().find(i => i.issueNumber > issueNumber) || null;
 }
 
 export async function searchIssues(query: string): Promise<Issue[]> {
   if (!query || query.trim() === '') return [];
   
   const issues = await getAllIssues();
-  const lowerQuery = query.toLowerCase();
+  const q = query.toLowerCase().trim();
   
-  return issues.filter(issue => 
-    issue.title.toLowerCase().includes(lowerQuery) ||
-    issue.subtitle.toLowerCase().includes(lowerQuery) ||
-    issue.excerpt.toLowerCase().includes(lowerQuery) ||
-    issue.content.toLowerCase().includes(lowerQuery) ||
-    issue.topics.some(t => t.toLowerCase().includes(lowerQuery)) ||
-    issue.tags.some(t => t.toLowerCase().includes(lowerQuery))
-  );
+  return issues.filter(issue => {
+    const badgeText = `the daily nodes #${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
+    const rawBadgeText = `daily-nodes#${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
+    const nodeTypeText = (issue.nodeType || 'daily-node').toLowerCase();
+    const nodeTypeDisplay = nodeTypeText === 'deep-node' ? 'deep node' : 'daily node';
+    const altNodeText = `node-${issue.issueNumber}`.toLowerCase();
+    const altNodeSpaceText = `node ${issue.issueNumber}`.toLowerCase();
+
+    return (
+      issue.title.toLowerCase().includes(q) ||
+      issue.subtitle.toLowerCase().includes(q) ||
+      issue.excerpt.toLowerCase().includes(q) ||
+      issue.content.toLowerCase().includes(q) ||
+      issue.topics.some(t => t.toLowerCase().includes(q)) ||
+      issue.tags.some(t => t.toLowerCase().includes(q)) ||
+      nodeTypeText.includes(q) ||
+      nodeTypeDisplay.includes(q) ||
+      badgeText.includes(q) ||
+      rawBadgeText.includes(q) ||
+      altNodeText.includes(q) ||
+      altNodeSpaceText.includes(q)
+    );
+  });
 }
 
 export async function getLatestIssue(): Promise<Issue | null> {

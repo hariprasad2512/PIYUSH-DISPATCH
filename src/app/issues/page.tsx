@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { getIssueSummaries } from '@/lib/content';
 import IssueArchiveClient from './IssueArchiveClient';
 import type { Metadata } from 'next';
@@ -33,7 +34,13 @@ export default async function IssuesArchivePage() {
         </div>
       </header>
 
-      <IssueArchiveClient initialIssues={issues} />
+      <Suspense fallback={
+        <div className="py-20 text-center text-sm font-mono text-[var(--text-secondary)] bg-[var(--surface)] rounded-3xl border border-[var(--border-color)]">
+          Loading dispatches...
+        </div>
+      }>
+        <IssueArchiveClient initialIssues={issues} />
+      </Suspense>
     </main>
   );
 }

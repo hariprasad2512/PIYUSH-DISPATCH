@@ -24,7 +24,7 @@ export function LatestIssue({ issue }: LatestIssueProps) {
         <div className="p-8 md:p-14 flex-1 flex flex-col justify-center">
           <div className="flex items-center gap-3 text-xs font-mono text-[var(--text-secondary)] mb-6">
             <span className="font-semibold bg-[var(--bg)] px-3 py-1 rounded-full border border-[var(--border-color)] text-[var(--accent)]">
-              DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}
+              The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}
             </span>
             <span>•</span>
             <time dateTime={issue.date}>{formatDate(issue.date)}</time>
@@ -96,7 +96,7 @@ export function LatestIssue({ issue }: LatestIssueProps) {
               </div>
               <div className="flex justify-between items-center text-xs font-mono text-[var(--text-secondary)]">
                 <span>Piyush&apos;s Dispatch</span>
-                <span>DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}</span>
+                <span>The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}</span>
               </div>
             </div>
           )}

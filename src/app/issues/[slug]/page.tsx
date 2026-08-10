@@ -153,7 +153,7 @@ export default async function IssuePage({ params }: Props) {
         {/* Article Header */}
         <header className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 text-center mb-12">
           <div className="flex items-center justify-center gap-3 text-xs font-mono font-semibold text-[var(--accent)] mb-6 tracking-wider uppercase">
-            <span>DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}</span>
+            <span>The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}</span>
             <span className="w-1 h-1 rounded-full bg-current" />
             <time dateTime={issue.date}>{formatDate(issue.date)}</time>
             <span className="w-1 h-1 rounded-full bg-current" />

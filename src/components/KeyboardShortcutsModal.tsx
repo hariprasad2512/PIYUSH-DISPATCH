@@ -21,6 +21,17 @@ export function KeyboardShortcutsModal() {
         setIsOpen(false);
       } else if (e.key === 't' || e.key === 'T') {
         cycleTheme();
+      } else if (e.key === '/') {
+        e.preventDefault();
+        window.location.href = '/search';
+      } else if (e.key === 'Z' && e.shiftKey) {
+        e.preventDefault();
+        const isZenActive = document.body.classList.toggle('zen-mode');
+        if (isZenActive && document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else if (!isZenActive && document.exitFullscreen && document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        }
       }
     };
 

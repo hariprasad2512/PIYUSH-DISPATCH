@@ -547,15 +547,22 @@ body.zen-mode .zen-exit-floating-btn {
   margin: 2rem 0;
 }
 
-/* Fast Transitions */
-* {
-  transition-property: background-color, border-color;
+/* Smooth Scoped Transitions */
+body,
+header,
+footer,
+article,
+aside,
+nav,
+div[class*="bg-"],
+div[class*="border-"] {
+  transition-property: background-color, border-color, color;
   transition-duration: 0.15s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-a, button {
-  transition-property: color, background-color, border-color, opacity, transform;
+a, button, input, select, textarea {
+  transition-property: color, background-color, border-color, opacity, transform, box-shadow;
   transition-duration: 0.15s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }

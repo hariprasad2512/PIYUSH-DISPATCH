@@ -25,7 +25,7 @@ export function RelatedIssues({ issues }: RelatedIssuesProps) {
             >
               <div className="flex items-center justify-between text-xs font-mono text-[var(--text-secondary)] mb-3">
                 <span className="text-[var(--accent)] font-semibold">
-                  DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}
+                  The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}
                 </span>
                 {issue.readingTime > 0 && (
                   <span>{issue.readingTime} min read</span>

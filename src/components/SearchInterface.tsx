@@ -14,6 +14,7 @@ export function SearchInterface({ issues, initialIssues }: SearchInterfaceProps)
   const allIssuesList = useMemo(() => issues || initialIssues || [], [issues, initialIssues]);
   const [query, setQuery] = useState('');
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
+  const [activeNodeType, setActiveNodeType] = useState<'daily-node' | 'deep-node' | null>(null);
 
   // Defer query filtering so typing remains 60fps instant
   const deferredQuery = useDeferredValue(query);
@@ -31,18 +32,36 @@ export function SearchInterface({ issues, initialIssues }: SearchInterfaceProps)
     if (activeTopic) {
       filtered = filtered.filter(issue => issue.topics.includes(activeTopic));
     }
+    if (activeNodeType) {
+      filtered = filtered.filter(issue => (issue.nodeType || 'daily-node') === activeNodeType);
+    }
     if (deferredQuery.trim()) {
       const q = deferredQuery.toLowerCase();
-      filtered = filtered.filter(issue => 
-        issue.title.toLowerCase().includes(q) || 
-        issue.subtitle.toLowerCase().includes(q) ||
-        issue.excerpt.toLowerCase().includes(q) ||
-        issue.topics.some(t => t.toLowerCase().includes(q)) ||
-        issue.tags.some(t => t.toLowerCase().includes(q))
-      );
+      filtered = filtered.filter(issue => {
+        const badgeText = `the daily nodes #${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
+        const rawBadgeText = `daily-nodes#${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
+        const nodeTypeText = (issue.nodeType || 'daily-node').toLowerCase();
+        const nodeTypeDisplay = nodeTypeText === 'deep-node' ? 'deep node' : 'daily node';
+        const altNodeText = `node-${issue.issueNumber}`.toLowerCase();
+        const altNodeSpaceText = `node ${issue.issueNumber}`.toLowerCase();
+
+        return (
+          issue.title.toLowerCase().includes(q) || 
+          issue.subtitle.toLowerCase().includes(q) ||
+          issue.excerpt.toLowerCase().includes(q) ||
+          issue.topics.some(t => t.toLowerCase().includes(q)) ||
+          issue.tags.some(t => t.toLowerCase().includes(q)) ||
+          nodeTypeText.includes(q) ||
+          nodeTypeDisplay.includes(q) ||
+          badgeText.includes(q) ||
+          rawBadgeText.includes(q) ||
+          altNodeText.includes(q) ||
+          altNodeSpaceText.includes(q)
+        );
+      });
     }
     return filtered;
-  }, [allIssuesList, deferredQuery, activeTopic]);
+  }, [allIssuesList, deferredQuery, activeTopic, activeNodeType]);
 
   useEffect(() => {
     const searchInput = document.getElementById('search-input');
@@ -64,7 +83,7 @@ export function SearchInterface({ issues, initialIssues }: SearchInterfaceProps)
         <input
           id="search-input"
           type="search"
-          placeholder="Search articles, topics, keywords..."
+          placeholder="Search daily-node, deep-node, topics, keywords..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="w-full bg-[var(--bg)] border border-[var(--border-color)] rounded-2xl py-4 pl-12 pr-4 text-lg text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] transition-all shadow-xs"
@@ -83,35 +102,83 @@ export function SearchInterface({ issues, initialIssues }: SearchInterfaceProps)
         )}
       </div>
 
-      {/* Filters */}
-      <div className="mb-10">
-        <h3 className="text-xs uppercase font-mono font-semibold text-[var(--text-secondary)] mb-3 tracking-wider">Filter by Topic</h3>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setActiveTopic(null)}
-            className={cn(
-              "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border",
-              activeTopic === null
-                ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-xs"
-                : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--accent)]"
-            )}
-          >
-            All Topics
-          </button>
-          {allTopics.map(topic => (
+      {/* Node Type & Topic Filters */}
+      <div className="mb-10 space-y-6">
+        {/* Node Type Selector */}
+        <div>
+          <h3 className="text-xs uppercase font-mono font-semibold text-[var(--text-secondary)] mb-3 tracking-wider flex items-center gap-2">
+            <span>Filter by Node Format</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+          </h3>
+          <div className="flex flex-wrap gap-2">
             <button
-              key={topic}
-              onClick={() => setActiveTopic(topic)}
+              onClick={() => setActiveNodeType(null)}
               className={cn(
-                "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border",
-                activeTopic === topic
+                "px-4 py-2 rounded-full text-xs font-mono font-bold transition-all border",
+                activeNodeType === null
                   ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-xs"
                   : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--accent)]"
               )}
             >
-              {topic}
+              All Formats ({allIssuesList.length})
             </button>
-          ))}
+            <button
+              onClick={() => setActiveNodeType('daily-node')}
+              className={cn(
+                "px-4 py-2 rounded-full text-xs font-mono font-bold transition-all border flex items-center gap-1.5",
+                activeNodeType === 'daily-node'
+                  ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                  : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-blue-500 hover:text-blue-500"
+              )}
+            >
+              <span>⚡ DAILY-NODE</span>
+              <span className="opacity-75">({allIssuesList.filter(i => (i.nodeType || 'daily-node') === 'daily-node').length})</span>
+            </button>
+            <button
+              onClick={() => setActiveNodeType('deep-node')}
+              className={cn(
+                "px-4 py-2 rounded-full text-xs font-mono font-bold transition-all border flex items-center gap-1.5",
+                activeNodeType === 'deep-node'
+                  ? "bg-purple-600 text-white border-purple-600 shadow-xs"
+                  : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-purple-500 hover:text-purple-500"
+              )}
+            >
+              <span>🧠 DEEP-NODE</span>
+              <span className="opacity-75">({allIssuesList.filter(i => i.nodeType === 'deep-node').length})</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Topic Filters */}
+        <div>
+          <h3 className="text-xs uppercase font-mono font-semibold text-[var(--text-secondary)] mb-3 tracking-wider">Filter by Topic</h3>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveTopic(null)}
+              className={cn(
+                "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border",
+                activeTopic === null
+                  ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-xs"
+                  : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--accent)]"
+              )}
+            >
+              All Topics
+            </button>
+            {allTopics.map(topic => (
+              <button
+                key={topic}
+                onClick={() => setActiveTopic(topic)}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border",
+                  activeTopic === topic
+                    ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-xs"
+                    : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--accent)]"
+                )}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

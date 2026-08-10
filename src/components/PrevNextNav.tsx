@@ -23,7 +23,7 @@ export function PrevNextNav({ previousIssue, nextIssue }: PrevNextNavProps) {
               <span aria-hidden="true">&larr;</span> Previous Dispatch
             </div>
             <div className="font-mono text-xs text-[var(--accent)] mb-1 font-semibold flex items-center gap-2">
-              <span>DAILY-NODES#{String(previousIssue.issueNumber).padStart(3, '0')}</span>
+              <span>The Daily Nodes #{String(previousIssue.issueNumber).padStart(3, '0')}</span>
               {previousIssue.readingTime > 0 && (
                 <span className="text-[var(--text-secondary)] font-normal">• {previousIssue.readingTime} min read</span>
               )}
@@ -49,7 +49,7 @@ export function PrevNextNav({ previousIssue, nextIssue }: PrevNextNavProps) {
               {nextIssue.readingTime > 0 && (
                 <span className="text-[var(--text-secondary)] font-normal">{nextIssue.readingTime} min read •</span>
               )}
-              <span>DAILY-NODES#{String(nextIssue.issueNumber).padStart(3, '0')}</span>
+              <span>The Daily Nodes #{String(nextIssue.issueNumber).padStart(3, '0')}</span>
             </div>
             <h4 className="font-serif font-bold text-lg text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors line-clamp-2">
               {nextIssue.title}

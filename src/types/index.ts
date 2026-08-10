@@ -40,10 +40,11 @@ export interface Issue {
   sources: Source[];
   relatedIssues: string[];
   published: boolean;
+  nodeType: 'daily-node' | 'deep-node';
 }
 
 /** The fields needed by archive/search cards; excludes article-only payload. */
 export type IssueSummary = Pick<Issue,
   'id' | 'issueNumber' | 'date' | 'slug' | 'title' | 'subtitle' |
-  'excerpt' | 'heroImage' | 'readingTime' | 'topics' | 'tags'
+  'excerpt' | 'heroImage' | 'readingTime' | 'topics' | 'tags' | 'nodeType'
 >;

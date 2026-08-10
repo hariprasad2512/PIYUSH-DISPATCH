@@ -18,13 +18,23 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
     )}>
       <div>
         <div className="flex items-center justify-between gap-4 mb-4 text-xs font-mono text-[var(--text-secondary)]">
-          <span className="font-semibold text-[var(--accent)] bg-[var(--bg)] px-2.5 py-1 rounded-full border border-[var(--border-color)]">
-            DAILY-NODES#{String(issue.issueNumber).padStart(3, '0')}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-[var(--accent)] bg-[var(--bg)] px-2.5 py-1 rounded-full border border-[var(--border-color)]">
+              The Daily Nodes #{String(issue.issueNumber).padStart(3, '0')}
+            </span>
+            <span className={cn(
+              "px-2 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider border",
+              (issue.nodeType || 'daily-node') === 'deep-node'
+                ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30"
+                : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
+            )}>
+              {issue.nodeType === 'deep-node' ? 'DEEP-NODE' : 'DAILY-NODE'}
+            </span>
+          </div>
           <time dateTime={issue.date}>{formatDate(issue.date)}</time>
         </div>
         
-        <Link href={`/issues/${issue.slug}`} className="block group-hover:text-[var(--accent)] transition-colors">
+        <Link href={`/issues/${issue.slug}`} className="relative z-10 block group-hover:text-[var(--accent)] transition-colors">
           <h3 className={cn(
             "font-serif font-bold text-[var(--text-primary)] leading-tight mb-3",
             isCompact ? "text-xl" : "text-2xl"
@@ -44,7 +54,7 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
         </p>
       </div>
 
-      <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between mt-auto">
+      <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between mt-auto relative z-10">
         <div className="flex flex-wrap gap-1.5">
           {issue.topics.slice(0, 2).map((topic) => (
             <span key={topic} className="text-[11px] px-2.5 py-0.5 rounded-full bg-[var(--bg)] border border-[var(--border-color)] text-[var(--text-secondary)]">

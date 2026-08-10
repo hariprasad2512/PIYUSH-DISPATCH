@@ -59,11 +59,17 @@ renderer.image = function({ href, title, text }) {
 
 marked.use({ renderer, gfm: true, breaks: false });
 
+const MAX_CACHE_SIZE = 100;
+
 export function MDXContent({ content }: MDXContentProps) {
   const source = content || '';
   let htmlContent = renderedContentCache.get(source);
   if (htmlContent === undefined) {
     htmlContent = marked.parse(source) as string;
+    if (renderedContentCache.size >= MAX_CACHE_SIZE) {
+      const firstKey = renderedContentCache.keys().next().value;
+      if (firstKey) renderedContentCache.delete(firstKey);
+    }
     renderedContentCache.set(source, htmlContent);
   }
 

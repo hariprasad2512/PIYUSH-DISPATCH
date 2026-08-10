@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo, useDeferredValue } from 'react';
+import { useState, useMemo, useDeferredValue, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { IssueSummary } from '@/types';
 import IssueCard from '@/components/IssueCard';
 import { cn } from '@/lib/utils';
@@ -10,9 +11,21 @@ interface IssueArchiveClientProps {
 }
 
 export default function IssueArchiveClient({ initialIssues }: IssueArchiveClientProps) {
+  const searchParams = useSearchParams();
+  const typeParam = searchParams.get('type') || searchParams.get('format');
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [selectedNodeType, setSelectedNodeType] = useState<'daily-node' | 'deep-node' | null>(null);
   const [visibleCount, setVisibleCount] = useState(12);
+
+  useEffect(() => {
+    if (typeParam === 'daily-node' || typeParam === 'deep-node') {
+      setSelectedNodeType(typeParam);
+    } else if (!typeParam) {
+      setSelectedNodeType(null);
+    }
+  }, [typeParam]);
 
   // Defer search filtering for instant typing
   const deferredSearchQuery = useDeferredValue(searchQuery);
@@ -29,30 +42,49 @@ export default function IssueArchiveClient({ initialIssues }: IssueArchiveClient
   const filteredIssues = useMemo(() => {
     let filtered = initialIssues;
     
-    if (deferredSearchQuery.trim()) {
-      const q = deferredSearchQuery.toLowerCase();
-      filtered = filtered.filter(issue => 
-        issue.title.toLowerCase().includes(q) || 
-        (issue.subtitle && issue.subtitle.toLowerCase().includes(q)) ||
-        issue.excerpt.toLowerCase().includes(q) ||
-        issue.topics.some(t => t.toLowerCase().includes(q)) ||
-        issue.tags.some(t => t.toLowerCase().includes(q))
-      );
+    if (selectedNodeType) {
+      filtered = filtered.filter(issue => (issue.nodeType || 'daily-node') === selectedNodeType);
     }
-    
+
     if (selectedTopic) {
       filtered = filtered.filter(issue => issue.topics.includes(selectedTopic));
     }
+
+    if (deferredSearchQuery.trim()) {
+      const q = deferredSearchQuery.toLowerCase();
+      filtered = filtered.filter(issue => {
+        const badgeText = `the daily nodes #${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
+        const rawBadgeText = `daily-nodes#${String(issue.issueNumber).padStart(3, '0')}`.toLowerCase();
+        const nodeTypeText = (issue.nodeType || 'daily-node').toLowerCase();
+        const nodeTypeDisplay = nodeTypeText === 'deep-node' ? 'deep node' : 'daily node';
+        const altNodeText = `node-${issue.issueNumber}`.toLowerCase();
+        const altNodeSpaceText = `node ${issue.issueNumber}`.toLowerCase();
+
+        return (
+          issue.title.toLowerCase().includes(q) || 
+          (issue.subtitle && issue.subtitle.toLowerCase().includes(q)) ||
+          issue.excerpt.toLowerCase().includes(q) ||
+          issue.topics.some(t => t.toLowerCase().includes(q)) ||
+          issue.tags.some(t => t.toLowerCase().includes(q)) ||
+          nodeTypeText.includes(q) ||
+          nodeTypeDisplay.includes(q) ||
+          badgeText.includes(q) ||
+          rawBadgeText.includes(q) ||
+          altNodeText.includes(q) ||
+          altNodeSpaceText.includes(q)
+        );
+      });
+    }
     
     return filtered;
-  }, [initialIssues, deferredSearchQuery, selectedTopic]);
+  }, [initialIssues, deferredSearchQuery, selectedTopic, selectedNodeType]);
 
   const visibleIssues = filteredIssues.slice(0, visibleCount);
   const hasMore = visibleCount < filteredIssues.length;
 
   return (
     <div className="space-y-12 w-full">
-      {/* Search & Topic Filters Bar */}
+      {/* Search & Format Filters Bar */}
       <div className="flex flex-col gap-6 bg-[var(--surface)] p-6 md:p-8 rounded-3xl border border-[var(--border-color)] shadow-xs">
         {/* Prominent Search Bar */}
         <div className="relative w-full">
@@ -64,7 +96,7 @@ export default function IssueArchiveClient({ initialIssues }: IssueArchiveClient
           </div>
           <input
             type="search"
-            placeholder="Search all dispatches, topics, keywords..."
+            placeholder="Search daily-node, deep-node, topics, keywords..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-12 pr-10 py-3.5 rounded-2xl border border-[var(--border-color)] bg-[var(--bg)] text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)] text-base transition-all shadow-xs"
@@ -83,6 +115,46 @@ export default function IssueArchiveClient({ initialIssues }: IssueArchiveClient
           )}
         </div>
         
+        {/* Format Selector Pills */}
+        <div className="flex flex-wrap gap-2 items-center pt-2 border-t border-[var(--border-color)]">
+          <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] mr-2 font-bold">Node Format:</span>
+          <button
+            onClick={() => setSelectedNodeType(null)}
+            className={cn(
+              "px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all border",
+              selectedNodeType === null
+                ? "bg-[var(--accent)] text-white border-[var(--accent)] shadow-xs"
+                : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--accent)]"
+            )}
+          >
+            All ({initialIssues.length})
+          </button>
+          <button
+            onClick={() => setSelectedNodeType('daily-node')}
+            className={cn(
+              "px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all border flex items-center gap-1.5",
+              selectedNodeType === 'daily-node'
+                ? "bg-blue-600 text-white border-blue-600 shadow-xs"
+                : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-blue-500 hover:text-blue-500"
+            )}
+          >
+            <span>⚡ DAILY-NODE</span>
+            <span className="opacity-75">({initialIssues.filter(i => (i.nodeType || 'daily-node') === 'daily-node').length})</span>
+          </button>
+          <button
+            onClick={() => setSelectedNodeType('deep-node')}
+            className={cn(
+              "px-3.5 py-1.5 rounded-full text-xs font-mono font-bold transition-all border flex items-center gap-1.5",
+              selectedNodeType === 'deep-node'
+                ? "bg-purple-600 text-white border-purple-600 shadow-xs"
+                : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-purple-500 hover:text-purple-500"
+            )}
+          >
+            <span>🧠 DEEP-NODE</span>
+            <span className="opacity-75">({initialIssues.filter(i => i.nodeType === 'deep-node').length})</span>
+          </button>
+        </div>
+
         {/* Topic Filter Pills */}
         <div className="flex flex-wrap gap-2 items-center pt-2 border-t border-[var(--border-color)]">
           <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)] mr-2 font-bold">Topics:</span>
@@ -95,7 +167,7 @@ export default function IssueArchiveClient({ initialIssues }: IssueArchiveClient
                 : "bg-[var(--bg)] text-[var(--text-secondary)] border-[var(--border-color)] hover:border-[var(--accent)]"
             )}
           >
-            All ({initialIssues.length})
+            All Topics
           </button>
           {allTopics.map(topic => (
             <button
