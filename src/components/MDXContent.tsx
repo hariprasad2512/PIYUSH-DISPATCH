@@ -27,7 +27,7 @@ renderer.heading = function({ tokens, depth }) {
   return `<h${depth} id="${id}">${text}</h${depth}>`;
 };
 
-// Custom image renderer to fix broken image paths and apply senior web dev figure styling
+// Custom image renderer with reliable path normalization and smooth fade-in styling
 renderer.image = function({ href, title, text }) {
   let cleanSrc = href || '';
   
@@ -43,7 +43,7 @@ renderer.image = function({ href, title, text }) {
   const caption = text || title || '';
 
   return `
-    <figure class="my-6 text-center">
+    <figure class="my-8 text-center non-reading-ui-wrapper">
       <img 
         src="${cleanSrc}" 
         alt="${caption}" 
@@ -51,11 +51,10 @@ renderer.image = function({ href, title, text }) {
         decoding="async"
         width="1376"
         height="768"
-        style="aspect-ratio: 1376 / 768;"
+        style="aspect-ratio: 16 / 9;"
         class="rounded-2xl border border-[var(--border-color)] shadow-lg w-full max-w-4xl mx-auto object-cover bg-[var(--surface)] transition-transform duration-300 hover:scale-[1.01]" 
-        onerror="this.onerror=null; this.style.display='none';"
       />
-      ${caption ? `<figcaption class="mt-2 text-center text-xs font-mono text-[var(--text-secondary)] italic">${caption}</figcaption>` : ''}
+      ${caption ? `<figcaption class="mt-2.5 text-center text-xs font-mono text-[var(--text-secondary)] italic">${caption}</figcaption>` : ''}
     </figure>
   `;
 };

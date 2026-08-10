@@ -36,9 +36,9 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
               }
             />
 
-            {/* Badge Overlay on Cover Image */}
-            <div className="absolute top-3 left-3 z-10">
-              <span className="font-mono text-xs font-bold px-3 py-1 rounded-full bg-[var(--bg)]/90 backdrop-blur-md border border-[var(--border-color)] text-[var(--accent)] shadow-xs">
+            {/* Badge Overlay on Cover Image - Placed at bottom-3 left-3 so top cover text is never hidden */}
+            <div className="absolute bottom-3 left-3 z-10">
+              <span className="font-mono text-[11px] font-bold px-3 py-1 rounded-full bg-[var(--bg)]/95 backdrop-blur-md border border-[var(--border-color)] text-[var(--accent)] shadow-sm">
                 {issueBadgeText}
               </span>
             </div>
@@ -98,18 +98,17 @@ export function IssueCard({ issue, variant = 'default' }: IssueCardProps) {
 
       {/* Card Footer Link */}
       <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between mt-auto relative z-10">
-        <span className="text-xs font-mono text-[var(--text-secondary)]">
-          The Daily Nodes
-        </span>
-        <Link href={`/issues/${issue.slug}`} className="text-xs font-semibold text-[var(--accent)] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-          Read dispatch <span aria-hidden="true">&rarr;</span>
+        <Link 
+          href={`/issues/${issue.slug}`}
+          className="text-xs font-mono font-bold text-[var(--accent)] hover:underline inline-flex items-center gap-1"
+        >
+          <span>Read Dispatch</span>
+          <span aria-hidden="true">&rarr;</span>
         </Link>
+        <span className="text-[10px] font-mono text-[var(--text-secondary)] uppercase">
+          {issue.nodeType || 'daily-node'}
+        </span>
       </div>
-
-      {/* Clickable Card Link Overlay */}
-      <Link href={`/issues/${issue.slug}`} className="absolute inset-0 z-0 opacity-0" aria-label={`Read issue ${issue.title}`}>
-        {issue.title}
-      </Link>
     </article>
   );
 }

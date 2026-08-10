@@ -1,6 +1,6 @@
 ---
 issueNumber: 8
-date: '2026-08-10'
+date: '2026-08-11'
 title: Agent Memory — How AI Agents Remember Things Across Interactions
 subtitle: >-
   Why LLMs forget everything after every chat, and how memory architectures give agents long-term persistence.
@@ -18,15 +18,15 @@ tags:
 sources:
   - title: Substack Dispatch
     publisher: Substack (xrcodex)
-    date: '2026-08-10'
+    date: '2026-08-11'
     url: 'https://xrcodex.substack.com/p/daily-nodes008-agent-memory'
   - title: Piyush's Dispatch Original
     publisher: Piyush's Dispatch
-    date: '2026-08-10'
+    date: '2026-08-11'
     url: 'https://dispatch.piyush.dev'
   - title: node-wiki (My Knowledge Base)
     publisher: Infinity Brain Vault
-    date: '2026-08-10'
+    date: '2026-08-11'
     url: /about
 published: true
 nodeType: daily-node
@@ -36,7 +36,7 @@ nodeType: daily-node
 
 *Why LLMs forget everything after every chat, and how memory architectures give agents long-term persistence.*
 
-![Agent Memory Overview](/assets/daily-node-8/1.jpg)
+![Agent Memory Architecture & Vector Neural Core](/assets/daily-node-8/1.jpg)
 
 Ever wondered why your favorite AI chatbot feels like a genius friend during a conversation, but as soon as you close the tab, it gets total amnesia?
 
@@ -50,6 +50,8 @@ Standard LLMs are stateless. Every single API call starts with a blank slate.
 
 If an LLM had to re-read your entire chat history, codebase docs, and personal preferences on every prompt, your context window would explode asap, and your API bill would be literally insane.
 
+![Stateless LLM Context Reset & Token Explosions](/assets/daily-node-8/2.jpg)
+
 So how do we fix it? We ditch stateless prompts and give the model a permanent brain: **Agent Memory**.
 
 ## The Memory
@@ -57,6 +59,8 @@ So how do we fix it? We ditch stateless prompts and give the model a permanent b
 Think of a standard LLM like a brilliant coder with goldfish memory. They can solve hard calculus in seconds, but forgot what you said two minutes ago.
 
 Now picture giving that coder a personal digital notebook.
+
+![Agent Digital Notebook & Floating Memory Clusters](/assets/daily-node-8/3.jpg)
 
 Before answering any question, they glance at their notebook. Every time you share a preference or complete a workflow step, they jot down a quick note.
 
@@ -68,6 +72,8 @@ It bridges short-term working context with long-term vector storage, so the agen
 
 Here is the simple technical loop behind every memory-capable agent:
 
+![5-Step Agent Memory Flow: Interaction → Retrieve → Use → Store → Update](/assets/daily-node-8/4.jpg)
+
 1. **Interaction** → You send a message or trigger an action.
 2. **Retrieve** → The agent queries its vector database or key-value store for relevant past facts.
 3. **Use** → It injects those relevant past memories directly into the system prompt context.
@@ -78,11 +84,15 @@ Here is the simple technical loop behind every memory-capable agent:
 
 Without memory, AI is just a glorified search engine.
 
+![Persisted AI Agent Workspace Tracking Tasks & Vector DBs](/assets/daily-node-8/5.jpg)
+
 With memory, agents can track multi-week coding tasks, remember your tech stack preferences, and learn from past bugs without making the same mistake twice.
 
 It's basically the difference between hiring a temp worker vs onboarding a full-time teammate.
 
 ## Key Takeaways
+
+![AI Agent Memory Key Takeaways & Performance Dashboard](/assets/daily-node-8/6.jpg)
 
 - LLMs are stateless by default; agent memory adds persistence.
 - Short-term memory keeps current task state in context.
